@@ -135,6 +135,9 @@ h1 em { color: var(--red); font-style: italic; }
 .status--offline { background:#292930; color:#aaaab3; }
 .player-card__body { padding:20px; }
 .player-card h3 { font-size:32px; line-height:.9; }
+.player-coach { margin: 10px 0 0; padding: 8px 10px; display: flex; align-items: center; gap: 8px; background: rgba(242,38,54,.08); border-left: 2px solid var(--red); font-size: 12px; }
+.player-coach span { color: #a9a9b3; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 10px; }
+.player-coach strong { color: #fff; font-weight: 700; }
 .eyebrow { margin:0 0 7px; color:#747480; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
 .stats { margin:20px 0; border-top:1px solid var(--line); }
 .stats div { display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:12px; }

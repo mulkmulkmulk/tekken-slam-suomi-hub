@@ -77,6 +77,10 @@ const socialLink = (label, url, handle) => `
   </a>
 `;
 
+const coachLine = (player) => player.coach
+  ? `<div class="player-coach"><span>Valmentaja</span><strong>${escapeHtml(player.coach)}</strong></div>`
+  : "";
+
 const socialLinks = (player) => [
   player.twitchChannel && socialLink("Twitch", `https://twitch.tv/${player.twitchChannel}`, player.twitchChannel),
   player.instagram && socialLink("Instagram", `https://instagram.com/${player.instagram}`, `@${player.instagram}`),
@@ -95,6 +99,7 @@ const playerCard = (player) => `
     <div class="player-card__body">
       <p class="eyebrow">TEKKEN SLAM SUOMI</p>
       <h3>${escapeHtml(player.name)}</h3>
+      ${coachLine(player)}
       ${player.isLive ? `<div class="player-live-summary"><strong>${escapeHtml(player.game || "Twitch")}</strong><span>${formatViewers(player.viewerCount)} katsojaa</span></div>` : ""}
       <div class="social-list">${socialLinks(player)}</div>
     </div>
@@ -112,6 +117,7 @@ const liveCard = (player) => `
     <div class="live-card__content">
       <p class="eyebrow">LÄHETYKSESSÄ NYT</p>
       <h3>${escapeHtml(player.name)}</h3>
+      ${coachLine(player)}
       ${player.game ? `<p class="stream-game">${escapeHtml(player.game)}</p>` : ""}
       <p class="stream-title">${escapeHtml(player.streamTitle || "Tekken Slam Suomi -harjoittelua suorana")}</p>
       <div class="live-card__footer">

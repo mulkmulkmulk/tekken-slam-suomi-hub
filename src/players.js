@@ -1,6 +1,8 @@
 // Tekken Slam Suomi -osallistujat.
 // Lisää uusi osallistuja kopioimalla yksi olio ja täydentämällä tiedot.
 // Live-tiedot (isLive, streamTitle, viewerCount) korvataan myöhemmin Twitch API -integraatiolla.
+// `coach`: streamerin oma valmentaja (nimi valmentajat-projektista, esim. "Mauste").
+// Jätetty tyhjäksi kunnes parit on julkistettu -- tyhjänä kenttä ei näy sivulla ollenkaan.
 
 export const players = [
   {
@@ -10,6 +12,7 @@ export const players = [
     twitchChannel: "eryoces",
     instagram: "erythewolf",
     tiktok: "Eryoces",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -19,6 +22,7 @@ export const players = [
     name: "Jönssi",
     initials: "JÖ",
     twitchChannel: "jonssi_",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -30,6 +34,7 @@ export const players = [
     twitchChannel: "suikkari96",
     instagram: "antti_sg96",
     tiktok: "suikkari96",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -41,6 +46,7 @@ export const players = [
     twitchChannel: "pi4ch",
     instagram: "pi4ch",
     tiktok: "pi4ch",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -52,6 +58,7 @@ export const players = [
     twitchChannel: "anmiina",
     instagram: "anmiina",
     tiktok: "anmiinaoriginal",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -64,6 +71,7 @@ export const players = [
     instagram: "anssikosola",
     youtube: "huntari",
     tiktok: "huntarifin",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -74,6 +82,7 @@ export const players = [
     initials: "R1",
     twitchChannel: "r1sbe",
     instagram: "risbekti",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -85,6 +94,7 @@ export const players = [
     twitchChannel: "socaw",
     instagram: "Arvo_j",
     tiktok: "socaws",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -96,6 +106,7 @@ export const players = [
     twitchChannel: "iroaoyamada",
     youtube: "iroaoyamada",
     bluesky: "Aoyamadakun",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -107,6 +118,7 @@ export const players = [
     twitchChannel: "the_katjaanaa",
     tiktok: "the_katjaana",
     youtube: "thekatjaana",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -119,6 +131,7 @@ export const players = [
     youtube: "Sitra",
     tiktok: "sitragamingyt",
     instagram: "officialsitra_",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -128,6 +141,7 @@ export const players = [
     name: "Mr Randomizer [JoJo]",
     initials: "MR",
     twitchChannel: "mr_randomizer_",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
