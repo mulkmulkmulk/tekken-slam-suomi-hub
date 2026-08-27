@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700&display=swap');
+/* Used only by the coaches view (.coach-* classes below), ported from the
+   original tekken-slam-suomi-valmentajat site so the coach pages keep that
+   project's exact look instead of this site's own red/Barlow Condensed style. */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   font-family: Inter, system-ui, sans-serif;
@@ -12,6 +16,23 @@
   --muted: #92929e;
   --line: #292930;
   --cream: #eae8df;
+
+  /* Coach-view palette, matching tekken-slam-suomi-valmentajat's style.css
+     1:1 -- kept under a separate --coach- prefix so it can't collide with
+     or accidentally get reused by the rest of this site's own tokens. */
+  --coach-bg: #08090c;
+  --coach-bg-elev: #131620;
+  --coach-bg-elev-2: #1a1e2b;
+  --coach-rule: #262b38;
+  --coach-rule-strong: #3c4256;
+  --coach-text: #eef0f6;
+  --coach-text-dim: #9aa1b8;
+  --coach-text-faint: #5b6178;
+  --coach-accent: #e8323f;
+  --coach-accent-strong: #ff4b58;
+  --coach-gold: #e8b94d;
+  --coach-gold-dim: rgba(232, 185, 77, 0.14);
+  --coach-shadow: rgba(0, 0, 0, 0.6);
 }
 
 * { box-sizing: border-box; }
@@ -374,313 +395,168 @@ nav button:hover, nav button.active { color: white; }
   .practical-list > div:last-child { border-bottom:0 !important; }
 }
 
-/* Integrated coach character select */
-.coaches-hero { background: radial-gradient(circle at 75% 30%, rgba(242,38,54,.13), transparent 26%), #0c0c10; }
-.coach-select-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
-.coach-select { position:relative; min-height:320px; overflow:hidden; border:1px solid var(--line); background:linear-gradient(150deg,#1c1c24,#0b0b0f); text-align:left; cursor:pointer; isolation:isolate; transition:transform .18s ease,border-color .18s ease,background .18s ease; }
-.coach-select::after { content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(to top,rgba(5,5,8,.96) 0%,rgba(5,5,8,.25) 52%,transparent 74%); pointer-events:none; }
-.coach-select__art { position:absolute; inset:0; display:grid; place-items:center; overflow:hidden; }
-.coach-select__character { width:100%; height:100%; object-fit:cover; object-position:center top; filter:saturate(.8) contrast(1.08); transform:scale(1.02); }
-.coach-select__character--poster { object-position:center; }
-.coach-select__fallback { color:#393944; font:italic 800 90px/1 Barlow Condensed,sans-serif; }
-.coach-select__overlay { position:absolute; z-index:3; left:18px; right:18px; bottom:17px; }
-.coach-select__overlay p { margin:0 0 5px; color:var(--red); font-size:9px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
-.coach-select__overlay h3 { margin:0; font-size:34px; line-height:.9; }
-.coach-select__overlay span { display:block; margin-top:6px; color:#9999a3; font-size:11px; }
-.coach-select__alts { position:absolute; z-index:4; top:10px; left:10px; display:flex; gap:5px; }
-.coach-select__alts img { width:38px; height:38px; object-fit:cover; object-position:top; border:1px solid rgba(255,255,255,.18); background:#101015; }
-.coach-select__all { position:absolute; z-index:4; top:11px; right:10px; padding:6px 8px; background:var(--red); color:#fff; font-size:9px; font-weight:900; letter-spacing:.1em; }
-.coach-source-note { margin:22px 0 0; color:#666671; font-size:11px; line-height:1.6; }
-@media (hover:hover) and (pointer:fine) { .coach-select:hover { transform:translateY(-3px); border-color:#555563; } .coach-select:hover .coach-select__character { transform:scale(1.06); } }
-.coach-select__character { transition:transform .28s ease; }
+/* Coach view -- ported 1:1 from tekken-slam-suomi-valmentajat's own
+   style.css (same tokens, fonts, layout) instead of this site's own
+   red/Barlow Condensed look. Everything here is under a coach- prefix so it
+   can't leak into or collide with the rest of the site's styling. */
 
-.coach-profile-hero { padding:42px clamp(24px,7vw,110px) 72px; border-bottom:1px solid var(--line); background:radial-gradient(circle at 80% 30%,rgba(242,38,54,.12),transparent 30%),#0c0c10; }
-.back-link { min-height:44px; margin-bottom:34px; padding:0; border:0; background:none; color:#a6a6b0; cursor:pointer; font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
-.coach-profile-hero__grid { display:grid; grid-template-columns:minmax(0,.85fr) minmax(380px,1.15fr); gap:50px; align-items:center; }
-.coach-profile-hero h1 { margin:4px 0 0; font-size:clamp(76px,10vw,145px); line-height:.78; }
-.coach-tag { margin:18px 0 0; color:var(--red); font-size:14px; font-weight:800; }
-.coach-lead { max-width:690px; margin:28px 0 0; color:#a5a5af; font-size:16px; line-height:1.7; }
-.coach-profile-hero__visual { min-height:360px; overflow:hidden; border:1px solid var(--line); background:#070709; }
-.coach-profile-hero__visual img { width:100%; height:100%; min-height:360px; object-fit:cover; }
-.coach-meta { display:grid; grid-template-columns:1fr 1fr; gap:1px; margin-top:28px; background:var(--line); border:1px solid var(--line); }
-.coach-meta div { padding:18px; background:#101015; }
-.coach-meta span { display:block; margin-bottom:8px; color:#696975; font-size:9px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
-.coach-meta strong { font:800 20px/1 Barlow Condensed,sans-serif; text-transform:uppercase; }
-.coach-video-frame { max-width:1050px; }
-.coach-profile-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.coach-info-block { padding:28px; border:1px solid var(--line); background:#0f0f14; }
-.coach-info-block--wide { grid-column:span 2; }
-.coach-info-block h3 { margin:6px 0 18px; font-size:34px; }
-.coach-info-block > p:last-child { margin:0; color:#9a9aa4; line-height:1.75; white-space:pre-line; }
-
-@media (max-width:1100px) { .coach-select-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .coach-profile-hero__grid { grid-template-columns:1fr; } }
-@media (max-width:800px) { .coach-select-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .coach-select { min-height:280px; } .coach-profile-grid { grid-template-columns:1fr; } .coach-info-block--wide { grid-column:auto; } .coach-meta { grid-template-columns:1fr; } }
-@media (max-width:480px) { .coach-select-grid { grid-template-columns:1fr; } .coach-select { min-height:330px; } }
-
-/* Coach experience refinements */
-.coach-select__art {
-  padding: 14px 12px 0;
-  background:
-    radial-gradient(circle at 50% 35%, rgba(255,255,255,.05), transparent 38%),
-    linear-gradient(180deg, #1b1b22 0%, #101015 100%);
+.coach-hero {
+  padding: 64px clamp(24px, 7vw, 110px) 24px;
+  background: var(--coach-bg);
+  border-bottom: 1px solid var(--coach-rule);
 }
-.coach-select__character {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-  filter: saturate(.88) contrast(1.04);
-  transform: none;
-}
-.coach-select__character--poster {
-  object-fit: cover;
-  object-position: center;
-  padding: 0;
-}
-@media (hover:hover) and (pointer:fine) {
-  .coach-select:hover .coach-select__character { transform: scale(1.025); }
-}
-.coach-select__alts img {
-  object-fit: contain;
-  object-position: center bottom;
-  padding: 2px;
-}
-
-.coach-profile-hero--refined {
-  padding-bottom: 56px;
-}
-.coach-profile-hero__grid--refined {
-  grid-template-columns: minmax(0, 1.08fr) minmax(340px, .92fr);
-  align-items: stretch;
-}
-.coach-profile-hero__visual--contained {
-  min-height: 390px;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(242,38,54,.08), transparent 34%),
-    #08080b;
-}
-.coach-profile-hero__visual--contained img {
-  width: 100%;
-  height: 100%;
-  min-height: 390px;
-  object-fit: contain;
-  object-position: center;
-}
-.coach-quickfacts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 30px;
-  border: 1px solid var(--line);
-  background: var(--line);
-  gap: 1px;
-}
-.coach-quickfacts > div {
-  min-width: 0;
-  padding: 18px;
-  background: #101015;
-}
-.coach-quickfacts span {
-  display: block;
-  margin-bottom: 8px;
-  color: #686874;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: .13em;
+.coach-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-}
-.coach-quickfacts strong {
-  display: block;
-  color: #f0f0f4;
-  font: 800 19px/1.15 Barlow Condensed, sans-serif;
-  text-transform: uppercase;
-  overflow-wrap: anywhere;
-}
-.coach-character-strip {
+  color: var(--coach-gold);
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 18px;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
 }
-.coach-character-chip {
-  width: 74px;
-  border: 1px solid var(--line);
-  background: #111116;
+.coach-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--coach-accent);
+  box-shadow: 0 0 10px 1px var(--coach-accent);
+  display: inline-block;
+  flex: none;
 }
-.coach-character-chip img {
+.coach-title {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(38px, 6.2vw, 76px);
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+  background: linear-gradient(180deg, #ffffff 0%, #d9dce6 55%, #a7adbe 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.coach-title em {
+  font-style: italic;
+  color: var(--coach-accent-strong);
+  -webkit-text-fill-color: var(--coach-accent-strong);
+}
+.coach-subhead {
+  margin: 18px 0 0;
+  max-width: 58ch;
+  color: var(--coach-text-dim);
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.6;
+}
+
+.coach-roster-section {
+  padding: 44px clamp(24px, 7vw, 110px) 100px;
+  background: var(--coach-bg);
+}
+.coach-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.coach-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  border: 1px solid var(--coach-rule);
+  background: var(--coach-bg-elev);
+  overflow: hidden;
+  cursor: pointer;
   display: block;
   width: 100%;
-  height: 62px;
-  object-fit: contain;
-  object-position: center bottom;
-  padding: 3px;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  opacity: 0;
+  animation: coach-tile-in 0.5s ease forwards;
+  animation-delay: calc(var(--i, 0) * 35ms);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
-.coach-character-chip span {
-  display: block;
-  padding: 6px 5px;
-  border-top: 1px solid var(--line);
-  color: #8f8f99;
-  font-size: 8px;
-  font-weight: 800;
-  text-align: center;
-  text-transform: uppercase;
+@keyframes coach-tile-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.coach-character-chip--main {
-  border-color: rgba(242,38,54,.65);
+.coach-tile:hover,
+.coach-tile:focus-visible {
+  transform: translateY(-5px);
+  border-color: var(--coach-gold);
+  box-shadow: 0 20px 40px -16px var(--coach-shadow), 0 0 0 1px var(--coach-gold-dim);
+  outline: none;
 }
-.coach-character-chip--main span { color: #fff; }
-
-.coach-profile-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
-  gap: 26px;
-  align-items: start;
-}
-.coach-profile-main { min-width: 0; }
-.coach-section-heading { margin-bottom: 22px; }
-.coach-section-heading h2 {
-  margin-top: 5px;
-  font-size: clamp(46px, 6vw, 76px);
-  line-height: .9;
-}
-.coach-story-card,
-.coach-details-card,
-.coach-replay-card {
-  border: 1px solid var(--line);
-  background: #0f0f14;
-}
-.coach-story-card {
-  padding: 28px;
-}
-.coach-story-card--featured {
-  margin-bottom: 14px;
-  background: linear-gradient(135deg, rgba(242,38,54,.06), transparent 52%), #0f0f14;
-}
-.coach-story-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-}
-.coach-story-card h3,
-.coach-details-card h3,
-.coach-replay-card h3 {
-  margin: 6px 0 16px;
-  font-size: 32px;
-}
-.coach-story-card > p:last-child {
-  margin: 0;
-  color: #a0a0aa;
-  line-height: 1.75;
-}
-.coach-details-card {
-  margin-top: 14px;
-  padding: 28px;
-}
-.coach-detail-row {
-  display: grid;
-  grid-template-columns: 130px minmax(0,1fr);
-  gap: 22px;
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
-}
-.coach-detail-row span {
-  color: #666672;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: .11em;
-  text-transform: uppercase;
-}
-.coach-detail-row p {
-  margin: 0;
-  color: #b0b0b8;
-  line-height: 1.65;
-}
-.coach-profile-sidebar { min-width: 0; }
-.coach-replay-card { overflow: hidden; }
-.coach-replay-card__heading { padding: 24px 24px 8px; }
-.coach-replay-media {
-  position: relative;
-  aspect-ratio: 16/9;
-  display: grid;
-  place-items: center;
-  background: #050507;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.coach-replay-media video {
-  display: block;
+.coach-tile-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  background: #000;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.06);
+  transition: transform 0.5s ease;
 }
-.coach-replay-note {
-  margin: 0;
-  padding: 16px 20px 20px;
-  color: #777782;
-  font-size: 11px;
-  line-height: 1.6;
+.coach-tile:hover .coach-tile-img { transform: scale(1.06); }
+.coach-tile-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 9, 12, 0) 40%, rgba(8, 9, 12, 0.6) 72%, rgba(8, 9, 12, 0.95) 100%);
 }
-.coach-video-error {
-  padding: 28px;
-  text-align: center;
+.coach-tile-num {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--coach-text-faint);
+  background: rgba(8, 9, 12, 0.55);
+  padding: 3px 7px;
+  border: 1px solid var(--coach-rule);
+  border-radius: 1px;
 }
-.coach-video-error strong {
+.coach-tile-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 13px 14px;
+}
+.coach-tile-name {
   display: block;
-  font: 800 24px/1 Barlow Condensed, sans-serif;
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
+  line-height: 1.08;
+  color: var(--coach-text);
 }
-.coach-video-error p {
-  margin: 12px auto;
-  max-width: 380px;
-  color: #85858f;
-  font-size: 12px;
-  line-height: 1.6;
-}
-.coach-video-error a {
-  color: #fff;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-
-@media (max-width: 980px) {
-  .coach-profile-layout { grid-template-columns: 1fr; }
-  .coach-profile-sidebar { order: -1; }
-  .coach-quickfacts { grid-template-columns: 1fr; }
-}
-@media (max-width: 720px) {
-  .coach-story-grid { grid-template-columns: 1fr; }
-  .coach-detail-row { grid-template-columns: 1fr; gap: 7px; }
-  .coach-profile-hero__visual--contained,
-  .coach-profile-hero__visual--contained img { min-height: 260px; }
-}
-
-/* Coach roster: follow the original valmentajat project's character-select composition. */
-.coach-select-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-.coach-select--tekken {
-  aspect-ratio: 1 / 1;
-  min-height: 0;
-  background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(242,38,54,.16), transparent 70%), #111117;
-}
-.coach-select__art--tekken {
-  padding: 0;
+.coach-tile-tag {
   display: block;
-  overflow: hidden;
-  background: transparent;
+  margin-top: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--coach-text-dim);
+}
+.coach-tile-tag-char { color: var(--coach-gold); }
+
+.coach-tile--character {
+  background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(232, 50, 63, 0.16), transparent 70%), var(--coach-bg-elev);
 }
 .coach-tile-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 55% at 50% 62%, rgba(232,185,77,.12), transparent 70%);
+  background: radial-gradient(ellipse 60% 55% at 50% 62%, var(--coach-gold-dim), transparent 70%);
   pointer-events: none;
 }
-.coach-tile-character {
+.coach-tile-char {
   position: absolute;
   left: 50%;
   bottom: 0;
@@ -689,72 +565,117 @@ nav button:hover, nav button.active { color: white; }
   max-width: none;
   transform: translateX(-50%);
   object-fit: contain;
-  filter: drop-shadow(0 14px 18px rgba(0,0,0,.65));
-  transition: transform .35s ease;
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.65));
+  transition: transform 0.4s ease;
 }
-.coach-select__scrim {
+.coach-tile:hover .coach-tile-char { transform: translateX(-50%) translateY(-4px) scale(1.045); }
+.coach-tile-alts {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(180deg, rgba(8,9,12,0) 40%, rgba(8,9,12,.60) 72%, rgba(8,9,12,.97) 100%);
-  pointer-events: none;
-}
-.coach-select--tekken .coach-select__overlay { z-index: 4; }
-.coach-select--tekken .coach-select__alts {
   top: 10px;
   right: 10px;
-  left: auto;
+  display: flex;
   flex-direction: column;
   gap: 5px;
+  z-index: 2;
 }
-.coach-select--tekken .coach-select__alts img {
-  width: 30px;
-  height: 30px;
+.coach-tile-alts img {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   object-fit: cover;
   object-position: 50% 20%;
-  padding: 0;
-  background: #15151b;
+  border: 1px solid var(--coach-rule-strong);
+  background: var(--coach-bg-elev-2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
+
+/* "can coach anyone" -- a diagonal ribbon laid over the big portrait. */
+.coach-all-ribbon {
+  position: absolute;
+  z-index: 3;
+  top: 17px;
+  right: -46px;
+  width: 170px;
+  transform: rotate(40deg);
+  transform-origin: center;
+  text-align: center;
+  padding: 4px 0 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #17130a;
+  background: linear-gradient(180deg, #f6cf74, var(--coach-gold));
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+  cursor: default;
+  pointer-events: none;
+}
+.coach-profile-portrait .coach-all-ribbon {
+  top: 14px;
+  right: -44px;
+  width: 150px;
+  font-size: 10px;
+}
+
+/* Split tile: main character on the left, "plays everyone" panel on the right. */
 .coach-tile-split { position: absolute; inset: 0; display: flex; }
-.coach-tile-split__character { position: relative; flex: 1 1 64%; overflow: hidden; }
-.coach-tile-split__all {
+.coach-tile-split-char { position: relative; flex: 1 1 64%; overflow: hidden; }
+.coach-tile-split-char .coach-tile-char { height: 94%; }
+.coach-tile-split-all {
   position: relative;
   flex: 0 0 36%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 9px 6px;
-  border-left: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(232,185,77,.10), transparent 45%), #15151b;
+  gap: 7px;
+  padding: 10px 6px;
+  border-left: 1px solid var(--coach-rule-strong);
+  background: linear-gradient(180deg, rgba(232, 185, 77, 0.1), transparent 45%), var(--coach-bg-elev-2);
 }
-.coach-tile-split__mosaic {
+.coach-tile-split-all .coach-tile-alts {
+  position: static;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.coach-tile-split-mosaic {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 3px;
   width: 100%;
 }
-.coach-tile-split__mosaic img {
+.coach-tile-split-mosaic img {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: 50% 15%;
-  filter: saturate(.45) brightness(.55);
+  border-radius: 2px;
+  filter: saturate(0.45) brightness(0.55);
 }
-.coach-tile-split__all > span {
-  color: #e8b94d;
-  font: italic 800 12px/1.1 Barlow Condensed,sans-serif;
+.coach-tile-split-label {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 11px;
+  line-height: 1.14;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
   text-align: center;
+  color: var(--coach-gold);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
-.coach-select__alts--split { right: 6px !important; }
+
+/* "plays everyone" roster-wall tile */
 .coach-tile-mosaic {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(3,1fr);
-  grid-template-rows: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 2px;
   padding: 2px;
 }
@@ -763,73 +684,332 @@ nav button:hover, nav button.active { color: white; }
   height: 100%;
   object-fit: cover;
   object-position: 50% 12%;
-  filter: saturate(.38) brightness(.54);
+  filter: saturate(0.35) brightness(0.5);
+  transition: filter 0.3s ease;
 }
-.coach-tile-mosaic__badge {
+.coach-tile--mosaic:hover .coach-tile-mosaic img { filter: saturate(0.7) brightness(0.7); }
+.coach-tile-mosaic-badge {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  padding-bottom: 18%;
-  color: #e8b94d;
-  font: italic 800 24px/.95 Barlow Condensed,sans-serif;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  text-shadow: 0 3px 14px rgba(0,0,0,.9);
-}
-@media (hover:hover) and (pointer:fine) {
-  .coach-select--tekken:hover .coach-tile-character { transform: translateX(-50%) translateY(-4px) scale(1.045); }
-  .coach-select--mosaic:hover .coach-tile-mosaic img { filter: saturate(.7) brightness(.7); }
+  padding-bottom: 20%;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 21px;
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--coach-gold);
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.85), 0 0 2px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
 }
 
-/* Profile hero intentionally has no replay thumbnail. */
-.coach-profile-hero--textonly { padding-bottom: 48px; }
-.coach-profile-intro {
+.coach-source-note {
+  margin: 22px 0 0;
+  color: var(--coach-text-faint);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 1100px) { .coach-roster { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .coach-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .coach-roster { grid-template-columns: 1fr; } }
+
+/* ---------- coach profile page ---------- */
+
+.coach-profile-wrap {
+  padding: 40px clamp(24px, 7vw, 110px) 100px;
+  background: var(--coach-bg);
+}
+.coach-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 30px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--coach-text-dim);
+  transition: color 0.2s ease;
+}
+.coach-back-link:hover { color: var(--coach-gold); }
+
+.coach-profile-head {
   display: grid;
-  grid-template-columns: minmax(0,.9fr) minmax(320px,1.1fr);
-  gap: 56px;
+  grid-template-columns: 168px 1fr;
+  gap: 28px;
   align-items: end;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--coach-rule);
 }
-.coach-profile-intro .coach-lead { margin: 0; max-width: 760px; }
-.coach-quickfacts--hero { margin-top: 34px; }
-.coach-character-mosaic--profile {
-  width: min(560px,100%);
-  display: grid;
-  grid-template-columns: repeat(9,minmax(0,1fr));
-  gap: 4px;
-  margin-top: 18px;
+@media (max-width: 520px) {
+  .coach-profile-head { grid-template-columns: 96px 1fr; gap: 16px; }
+  .coach-profile-portrait .coach-tile-mosaic-badge { font-size: 11px; }
 }
-.coach-character-mosaic--profile img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  object-position: 50% 12%;
-  border: 1px solid var(--line);
-  filter: saturate(.7) brightness(.72);
+.coach-profile-portrait {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--coach-rule-strong);
+  box-shadow: 0 24px 48px -20px var(--coach-shadow);
 }
-.coach-replay-unavailable {
-  min-height: 220px;
+.coach-profile-portrait img { width: 100%; height: 100%; object-fit: cover; }
+.coach-profile-portrait--character { background: var(--coach-bg-elev); }
+.coach-profile-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 60% at 50% 60%, var(--coach-gold-dim), transparent 72%);
+  pointer-events: none;
+}
+.coach-profile-char {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 96%;
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.6));
+}
+.coach-profile-num {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--coach-text);
+  background: rgba(8, 9, 12, 0.6);
+  padding: 2px 6px;
+  border: 1px solid var(--coach-rule-strong);
+}
+.coach-profile-name {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(32px, 5vw, 54px);
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 6px;
+  color: var(--coach-text);
+}
+.coach-profile-tag {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.5px;
+  color: var(--coach-gold);
+}
+.coach-profile-alts {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.coach-profile-alts .coach-tile-alts {
+  position: static;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.coach-stage {
+  position: relative;
+  margin-top: 36px;
+  border: 1px solid var(--coach-rule-strong);
+  background: #000;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.coach-stage-video { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; }
+.coach-stage-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--coach-gold);
+  border-style: solid;
+  opacity: 0.85;
+  pointer-events: none;
+}
+.coach-stage-corner.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.coach-stage-corner.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.coach-stage-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.coach-stage-corner.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+.coach-stage-label {
+  position: absolute;
+  top: 10px;
+  left: 36px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coach-gold);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.coach-video-error {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 28px;
+  background: var(--coach-bg-elev);
+}
+.coach-video-error strong {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--coach-text);
+}
+.coach-video-error p {
+  margin: 12px auto 0;
+  max-width: 380px;
+  color: var(--coach-text-dim);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.coach-video-error a {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--coach-gold);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.coach-replay-unavailable {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: 32px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: radial-gradient(circle at 50% 45%, rgba(242,38,54,.08), transparent 45%), #08080b;
+  background: var(--coach-bg-elev);
 }
-.coach-replay-unavailable span { color: var(--red); font-size: 9px; font-weight: 900; letter-spacing: .14em; }
-.coach-replay-unavailable strong { margin-top: 8px; font: 800 34px/1 Barlow Condensed,sans-serif; text-transform: uppercase; }
-.coach-replay-unavailable p { max-width: 360px; margin: 14px 0 0; color: #85858f; font-size: 12px; line-height: 1.65; }
+.coach-replay-unavailable span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coach-gold);
+}
+.coach-replay-unavailable strong {
+  margin-top: 10px;
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--coach-text);
+}
+.coach-replay-unavailable p {
+  max-width: 360px;
+  margin: 10px 0 0;
+  color: var(--coach-text-dim);
+  font-size: 13px;
+  line-height: 1.6;
+}
 
-@media (max-width:1100px) { .coach-select-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
-@media (max-width:800px) {
-  .coach-select-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .coach-profile-intro { grid-template-columns:1fr; gap:20px; align-items:start; }
-  .coach-character-mosaic--profile { grid-template-columns:repeat(5,minmax(0,1fr)); }
+.coach-sheet {
+  margin-top: 20px;
+  border-top: 1px solid var(--coach-rule);
 }
-@media (max-width:480px) {
-  .coach-select-grid { grid-template-columns:1fr; }
-  .coach-character-mosaic--profile { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.coach-stat {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--coach-rule);
+}
+@media (max-width: 620px) {
+  .coach-stat { grid-template-columns: 1fr; gap: 6px; }
+}
+.coach-stat-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coach-text-faint);
+  padding-top: 2px;
+}
+.coach-stat-value {
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--coach-text);
+  white-space: pre-line;
+}
+.coach-stat-value--emphasis { font-size: 16px; }
+
+.coach-cta-row {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.coach-cta-box {
+  border: 1px solid var(--coach-rule-strong);
+  background: var(--coach-bg-elev);
+  padding: 14px 20px;
+  border-radius: 2px;
+}
+.coach-cta-label {
+  margin: 0 0 4px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coach-text-faint);
+}
+.coach-cta-discord {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 15px;
+  color: var(--coach-gold);
+}
+.coach-cta {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--coach-accent);
+  color: #fff;
+  border: 1px solid var(--coach-accent);
+  padding: 14px 26px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+.coach-cta:hover {
+  background: var(--coach-accent-strong);
+  box-shadow: 0 10px 26px -10px rgba(232, 50, 63, 0.6);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coach-tile { transition: none; animation: none; opacity: 1; }
 }
 
 /* Twitch live integration */

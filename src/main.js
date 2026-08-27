@@ -351,85 +351,102 @@ function coachMosaic(coach, compact = false) {
   return items.map((item) => `<img src="${item.url}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`).join("");
 }
 
-function coachCard(coach) {
-  const altIcons = (coach.altCharacterImages || []).slice(0,4).map((item) =>
-    `<img src="${item.url}" alt="${item.slug}" title="${item.slug}" loading="lazy">`
-  ).join("");
+function coachTileAlts(coach) {
+  const alts = (coach.altCharacterImages || []).slice(0, 4);
+  if (!alts.length) return "";
+  const icons = alts.map((item) => `<img src="${item.url}" alt="${item.slug}" title="${item.slug}" loading="lazy">`).join("");
+  return `<span class="coach-tile-alts">${icons}</span>`;
+}
 
-  let art;
+function coachAllRibbon() {
+  return `<span class="coach-all-ribbon" title="Auttaa tarvittaessa myös kaikkien muiden hahmojen kanssa">+ Kaikki hahmot</span>`;
+}
+
+function coachTileArt(coach) {
   if (coach.allCharacters) {
-    art = `
-      <div class="coach-tile-mosaic">${coachMosaic(coach)}</div>
-      <div class="coach-tile-mosaic__badge">KAIKKI<br>HAHMOT</div>`;
-  } else if (coach.helpsAll && coach.characterImage) {
-    art = `
-      <div class="coach-tile-split">
-        <div class="coach-tile-split__character">
-          <span class="coach-tile-glow"></span>
-          <img class="coach-tile-character" src="${coach.characterImage}" alt="${coach.mainCharacter || coach.name}" loading="lazy">
-          ${altIcons ? `<div class="coach-select__alts coach-select__alts--split">${altIcons}</div>` : ""}
-        </div>
-        <div class="coach-tile-split__all">
-          <div class="coach-tile-split__mosaic">${coachMosaic(coach, true)}</div>
-          <span>KAIKKI<br>HAHMOT</span>
-        </div>
-      </div>`;
-  } else if (coach.characterImage) {
-    art = `
-      <span class="coach-tile-glow"></span>
-      <img class="coach-tile-character" src="${coach.characterImage}" alt="${coach.mainCharacter || coach.name}" loading="lazy">
-      ${altIcons ? `<div class="coach-select__alts">${altIcons}</div>` : ""}`;
-  } else {
-    art = `<div class="coach-tile-mosaic">${coachMosaic(coach)}</div><div class="coach-tile-mosaic__badge">MONIPUOLINEN</div>`;
+    return `
+        <span class="coach-tile-mosaic">${coachMosaic(coach)}</span>
+        <span class="coach-tile-mosaic-badge">KAIKKI<br>HAHMOT</span>`;
   }
+  if (coach.mainCharacter && coach.helpsAll) {
+    return `
+        <span class="coach-tile-split">
+          <span class="coach-tile-split-char">
+            <span class="coach-tile-glow"></span>
+            <img class="coach-tile-char" src="${coach.characterImage}" alt="${coach.mainCharacter}" loading="lazy">
+          </span>
+          <span class="coach-tile-split-all">
+            ${coachTileAlts(coach)}
+            <span class="coach-tile-split-mosaic">${coachMosaic(coach, true)}</span>
+            <span class="coach-tile-split-label">KAIKKI<br>HAHMOT</span>
+          </span>
+        </span>`;
+  }
+  if (coach.mainCharacter) {
+    return `
+        <span class="coach-tile-glow"></span>
+        <img class="coach-tile-char" src="${coach.characterImage}" alt="${coach.mainCharacter}" loading="lazy">`;
+  }
+  return `<img class="coach-tile-img" src="${coach.poster}" alt="" loading="lazy">`;
+}
 
-  const mainLabel = coach.allCharacters
-    ? "Kaikki hahmot"
-    : (coach.mainCharacter || "Monipuolinen").replaceAll("-", " ");
+function coachCard(coach, index) {
+  const usesSplit = Boolean(coach.mainCharacter && coach.helpsAll);
+  const mainLabel = coach.mainCharacter
+    ? coach.mainCharacter.replaceAll("-", " ")
+    : coach.allCharacters
+      ? "Kaikki hahmot"
+      : null;
 
   return `
-    <button type="button" class="coach-select coach-select--tekken ${coach.allCharacters ? "coach-select--mosaic" : ""}" data-coach="${coach.slug}" aria-label="Avaa valmentajan ${coach.name} profiili">
-      <div class="coach-select__art coach-select__art--tekken">${art}</div>
-      <div class="coach-select__scrim"></div>
-      <div class="coach-select__overlay">
-        <p>${mainLabel}</p>
-        <h3>${coach.name}</h3>
-        ${coach.tag ? `<span>${coach.tag}</span>` : ""}
-      </div>
+    <button type="button" class="coach-tile${coach.mainCharacter ? " coach-tile--character" : ""}${coach.allCharacters ? " coach-tile--mosaic" : ""}${usesSplit ? " coach-tile--split" : ""}" data-coach="${coach.slug}" aria-label="Avaa valmentajan ${coach.name} profiili" style="--i:${index}">
+      ${coachTileArt(coach)}
+      <span class="coach-tile-scrim"></span>
+      <span class="coach-tile-num">P${String(index + 1).padStart(2, "0")}</span>
+      ${usesSplit ? "" : coachTileAlts(coach)}
+      <span class="coach-tile-info">
+        <span class="coach-tile-name">${coach.name}</span>
+        ${mainLabel ? `<span class="coach-tile-tag coach-tile-tag-char">${mainLabel}</span>` : coach.tag ? `<span class="coach-tile-tag">${coach.tag}</span>` : ""}
+      </span>
     </button>`;
 }
 
-function coachInfoRow(label, value) {
-  return `<div class="coach-detail-row"><span>${label}</span><p>${value}</p></div>`;
+function coachStat(label, value, emphasis = false) {
+  if (!value) return "";
+  return `
+      <div class="coach-stat">
+        <div class="coach-stat-label">${label}</div>
+        <div class="coach-stat-value${emphasis ? " coach-stat-value--emphasis" : ""}">${value}</div>
+      </div>`;
 }
 
-function coachProfileView(coach) {
-  const mainLabel = coach.allCharacters
-    ? "Kaikki hahmot"
-    : (coach.mainCharacter || "Monipuolinen").replaceAll("-", " ");
+function coachProfileView(coach, index) {
+  const mainLabel = coach.mainCharacter
+    ? coach.mainCharacter.replaceAll("-", " ")
+    : coach.allCharacters
+      ? "Kaikki hahmot"
+      : coach.tag || "";
 
-  const characterThumbs = coach.allCharacters
-    ? `<div class="coach-character-mosaic coach-character-mosaic--profile">${coachMosaic(coach)}</div>`
-    : [
-        ...(coach.characterImage ? [{ slug: coach.mainCharacter, url: coach.characterImage }] : []),
-        ...(coach.altCharacterImages || [])
-      ].slice(0, 6).map((item, index) => `
-        <div class="coach-character-chip ${index === 0 ? "coach-character-chip--main" : ""}">
-          <img src="${item.url}" alt="${item.slug}" loading="lazy" onerror="this.parentElement.hidden=true">
-          <span>${item.slug.replaceAll("-", " ")}</span>
-        </div>`).join("");
+  const portraitArt = coach.allCharacters
+    ? `<span class="coach-tile-mosaic">${coachMosaic(coach)}</span><span class="coach-tile-mosaic-badge">KAIKKI<br>HAHMOT</span>`
+    : coach.mainCharacter
+      ? `<span class="coach-profile-glow"></span><img class="coach-profile-char" src="${coach.characterImage}" alt="${coach.mainCharacter}">`
+      : `<img src="${coach.poster}" alt="">`;
 
   const replay = coach.video ? `
-    <div class="coach-replay-media">
-      <video controls preload="metadata" playsinline data-coach-video>
-        <source src="${coach.video}" type="video/mp4">
-        Selaimesi ei tue HTML5-videota.
-      </video>
-      <div class="coach-video-error" hidden>
-        <strong>Replay-videota ei voitu toistaa.</strong>
-        <p>Videolähde ei vastaa tai tiedosto ei ole selaimen tukemassa muodossa.</p>
-        <a href="${coach.video}" target="_blank" rel="noopener">Avaa video →</a>
-      </div>
+    <video class="coach-stage-video" controls playsinline preload="metadata" poster="${coach.posterWide}" data-coach-video>
+      <source src="${coach.video}" type="video/mp4">
+      Selaimesi ei tue HTML5-videota.
+    </video>
+    <span class="coach-stage-corner tl"></span>
+    <span class="coach-stage-corner tr"></span>
+    <span class="coach-stage-corner bl"></span>
+    <span class="coach-stage-corner br"></span>
+    <span class="coach-stage-label"><span class="coach-dot"></span>Replay</span>
+    <div class="coach-video-error" hidden>
+      <strong>Replay-videota ei voitu toistaa.</strong>
+      <p>Videolähde ei vastaa tai tiedosto ei ole selaimen tukemassa muodossa.</p>
+      <a href="${coach.video}" target="_blank" rel="noopener">Avaa video →</a>
     </div>` : `
     <div class="coach-replay-unavailable">
       <span>REPLAY</span>
@@ -438,106 +455,74 @@ function coachProfileView(coach) {
     </div>`;
 
   return `
-    <section class="coach-profile-hero coach-profile-hero--textonly">
-      <button class="back-link" type="button" data-back-coaches>← Takaisin valmentajiin</button>
-      <div class="coach-profile-intro">
-        <div>
-          <p class="kicker">TEKKEN SLAM SUOMI · VALMENTAJA</p>
-          <h1>${coach.name}</h1>
-          ${coach.tag ? `<p class="coach-tag">${coach.tag}</p>` : ""}
-        </div>
-        <p class="coach-lead">${coach.description}</p>
+    <button class="coach-back-link" type="button" data-back-coaches>← Takaisin valmentajiin</button>
+
+    <div class="coach-profile-head">
+      <div class="coach-profile-portrait${coach.mainCharacter ? " coach-profile-portrait--character" : ""}">
+        ${portraitArt}
+        ${coach.helpsAll ? coachAllRibbon() : ""}
+        <span class="coach-profile-num">P${String(index + 1).padStart(2, "0")}</span>
       </div>
-
-      <div class="coach-quickfacts coach-quickfacts--hero">
-        <div><span>Päähahmo</span><strong>${mainLabel}</strong></div>
-        <div><span>Discord</span><strong>${coach.discord}</strong></div>
-        <div><span>Saatavuus</span><strong>${coach.availability}</strong></div>
+      <div>
+        <p class="coach-eyebrow"><span class="coach-dot"></span>Valmentajaprofiili</p>
+        <h1 class="coach-profile-name">${coach.name}</h1>
+        <p class="coach-profile-tag">${mainLabel}${coach.tag && coach.mainCharacter ? ` &middot; ${coach.tag}` : ""}</p>
+        ${(coach.altCharacterImages || []).length ? `<div class="coach-profile-alts">${coachTileAlts(coach)}</div>` : ""}
       </div>
+    </div>
 
-      ${characterThumbs ? `<div class="coach-character-strip">${characterThumbs}</div>` : ""}
-    </section>
+    <div class="coach-stage">${replay}</div>
 
-    <section class="section coach-profile-layout">
-      <div class="coach-profile-main">
-        <div class="coach-section-heading">
-          <p class="kicker">VALMENTAJAPROFIILI</p>
-          <h2>Miten ${coach.name} auttaa?</h2>
-        </div>
+    <div class="coach-sheet">
+      ${coachStat("Hahmot", coach.characters, true)}
+      ${coachStat("Kokemus", coach.experience)}
+      ${coachStat("Erikoisosaaminen", coach.specialty)}
+      ${coachStat("Valmennustyyli", coach.style)}
+      ${coachStat("Saatavuus", coach.availability)}
+      ${coachStat("Pelaajana", coach.description)}
+    </div>
 
-        <article class="coach-story-card coach-story-card--featured">
-          <p class="eyebrow">VALMENNUSTYYLI</p>
-          <h3>Miten valmennan?</h3>
-          <p>${coach.style}</p>
-        </article>
-
-        <div class="coach-story-grid">
-          <article class="coach-story-card">
-            <p class="eyebrow">KOKEMUS</p>
-            <h3>Tausta</h3>
-            <p>${coach.experience}</p>
-          </article>
-          <article class="coach-story-card">
-            <p class="eyebrow">ERIKOISOSAAMINEN</p>
-            <h3>Vahvuudet</h3>
-            <p>${coach.specialty}</p>
-          </article>
-        </div>
-
-        <article class="coach-details-card">
-          <h3>Pelitiedot</h3>
-          ${coachInfoRow("Hahmot", coach.characters)}
-          ${coachInfoRow("Saatavuus", coach.availability)}
-          ${coachInfoRow("Discord", coach.discord)}
-        </article>
+    <div class="coach-cta-row">
+      <div class="coach-cta-box">
+        <p class="coach-cta-label">Ota yhteyttä Discordissa</p>
+        <p class="coach-cta-discord">${coach.discord}</p>
       </div>
-
-      <aside class="coach-profile-sidebar">
-        <div class="coach-replay-card">
-          <div class="coach-replay-card__heading">
-            <div><p class="eyebrow">REPLAY</p><h3>${coach.name} pelissä</h3></div>
-          </div>
-          ${replay}
-          <p class="coach-replay-note">Replay on valmentajan oma pelinäyte alkuperäisestä valmentajaprojektista.</p>
-        </div>
-      </aside>
-    </section>`;
+      <button class="coach-cta" type="button" data-back-coaches>Selaa muita valmentajia</button>
+    </div>`;
 }
 
 function coachesView() {
-  if (selectedCoach) return coachProfileView(selectedCoach);
+  if (selectedCoach) {
+    const idx = coaches.findIndex((c) => c.slug === selectedCoach.slug);
+    return `<div class="coach-profile-wrap">${coachProfileView(selectedCoach, idx)}</div>`;
+  }
 
   if (coachesState.status === "loading") {
     return `
-    <section class="page-hero coaches-hero">
-      <p class="kicker">TEKKEN SLAM SUOMI</p>
-      <h1>Valitse valmentaja</h1>
-      <p>Ladataan valmentajia…</p>
+    <section class="coach-hero">
+      <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Valmentaja Rosteri</p>
+      <h1 class="coach-title">VALITSE<br><em>VALMENTAJASI</em></h1>
+      <p class="coach-subhead">Ladataan valmentajia…</p>
     </section>`;
   }
 
   if (coachesState.status === "error") {
     return `
-    <section class="page-hero coaches-hero">
-      <p class="kicker">TEKKEN SLAM SUOMI</p>
-      <h1>Valitse valmentaja</h1>
-      <p>Valmentajadataa ei juuri nyt saatu ladattua. Yritä päivittää sivu hetken kuluttua.</p>
+    <section class="coach-hero">
+      <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Valmentaja Rosteri</p>
+      <h1 class="coach-title">VALITSE<br><em>VALMENTAJASI</em></h1>
+      <p class="coach-subhead">Valmentajadataa ei juuri nyt saatu ladattua. Yritä päivittää sivu hetken kuluttua.</p>
     </section>`;
   }
 
   return `
-    <section class="page-hero coaches-hero">
-      <p class="kicker">TEKKEN SLAM SUOMI</p>
-      <h1>Valitse valmentaja</h1>
-      <p>${coaches.length} kotimaista Tekken-pelaajaa on mukana auttamassa osallistujia harjoituskaudella. Valitse valmentaja nähdäksesi hahmot, kokemuksen, valmennustyylin ja replay-esittelyn.</p>
+    <section class="coach-hero">
+      <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Valmentaja Rosteri</p>
+      <h1 class="coach-title">VALITSE<br><em>VALMENTAJASI</em></h1>
+      <p class="coach-subhead">Valitse kortti, niin näet valmentajan jättämät tiedot sekä lyhyen pelinäytteen.</p>
     </section>
-
-    <section class="section coaches-select-section">
-      <div class="section-heading">
-        <div><p class="kicker">CHARACTER SELECT</p><h2>Valmentajat</h2></div>
-        <p>Klikkaa korttia avataksesi profiilin.</p>
-      </div>
-      <div class="coach-select-grid">${coaches.map(coachCard).join("")}</div>
+    <section class="coach-roster-section">
+      <div class="coach-roster">${coaches.map((c, i) => coachCard(c, i)).join("")}</div>
       <p class="coach-source-note">Valmentajien profiilit perustuvat Tekken Slam Suomi -valmentajahaun tietoihin. Valitse kortti nähdäksesi tarkemman esittelyn ja replayn.</p>
     </section>`;
 }
