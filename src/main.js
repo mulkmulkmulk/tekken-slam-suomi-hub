@@ -607,6 +607,10 @@ function render() {
   });
 
   const coachVideo = app.querySelector("[data-coach-video]");
+  // Default playback volume for replay clips (viewers can still adjust with
+  // the player's own volume slider) -- matches the original valmentajat
+  // site's default. 1.0 = 100%.
+  if (coachVideo) coachVideo.volume = 0.4;
   coachVideo?.addEventListener("error", () => {
     coachVideo.hidden = true;
     const errorBox = coachVideo.parentElement?.querySelector(".coach-video-error");
