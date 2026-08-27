@@ -197,6 +197,24 @@ function infoView() {
       <a class="button button--primary" href="https://www.start.gg/tournament/kahakka-3/details" target="_blank" rel="noreferrer">Kahakka 3 start.gg →</a>
     </section>
 
+    <section class="section day-overview">
+      <div class="section-heading">
+        <div><p class="kicker">VIIKONLOPPU VAASASSA</p><h2>Kaksi päivää, kaksi tapahtumaa</h2></div>
+      </div>
+      <div class="feature-grid feature-grid--2">
+        <article class="feature-card">
+          <p class="eyebrow">20.11.2026</p>
+          <h3>TekkenOnlineWeeklyt & TSS-finaali</h3>
+          <p>Kasuaalipelailua ja Tekken Slam Suomi -finaali.</p>
+        </article>
+        <article class="feature-card">
+          <p class="eyebrow">21.11.2026</p>
+          <h3>Kahakka 3 -turnaus</h3>
+          <p>Avoin yleisölle: Amateur-lohko uusille pelaajille, Main-lohko kokeneille kilpapelaajille.</p>
+        </article>
+      </div>
+    </section>
+
     <section class="section event-info">
       <div class="section-heading">
         <div><p class="kicker">TAPAHTUMATIEDOT</p><h2>Finaalipäivä Vaasassa</h2></div>
@@ -208,6 +226,7 @@ function infoView() {
         <div><span>Yleisö</span><strong>Vapaa pääsy</strong><p>Vierailijat voivat tulla seuraamaan toimintaa maksutta.</p></div>
         <div><span>Striimi</span><strong>Vaasa Pub Fighters</strong><p><a class="inline-link" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">twitch.tv/vaasapubfighters →</a></p></div>
         <div><span>Järjestäjät</span><strong>VPF × TOW</strong><p>Vaasa Pub Fighters ja TekkenOnlineWeeklyt.</p></div>
+        <div><span>Discord</span><strong><a class="inline-link inline-link--strong" href="https://discord.gg/WAT85TTCrF" target="_blank" rel="noreferrer">TekkenOnlineWeeklyt ↗</a></strong><p>Täällä tapahtumaa järjestetään ja siitä keskustellaan.</p></div>
       </div>
     </section>
 
@@ -222,17 +241,6 @@ function infoView() {
         <article class="feature-card"><p class="eyebrow">KATSOMINEN & KUVAUS</p><h3>Tule mukaan tunnelmaan</h3><p>Paikalle saa tulla vain katsomaan ja pelaamaan rentoja matseja. Huomioithan, että tapahtumapaikalla saatat näkyä livestriimissä tai tulla kuvatuksi.</p></article>
       </div>
       <div class="venue-actions"><a class="button button--secondary" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Roomin sivut →</a><a class="button button--secondary" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Smash Room Vaasa kartalla →</a></div>
-    </section>
-
-    <section class="section contacts-section">
-      <div class="section-heading">
-        <div><p class="kicker">LISÄTIEDOT & YHTEYSTIEDOT</p><h2>Tapahtuman järjestäjät</h2></div>
-        <p>Kysymyksiä voi esittää suomeksi, ruotsiksi tai englanniksi Vaasa Pub Fightersille.</p>
-      </div>
-      <div class="contact-grid">
-        <article class="contact-card"><h3>Vaasa Pub Fighters</h3><div class="contact-links"><a href="https://discord.gg/Wzkn8Es" target="_blank" rel="noreferrer">Discord →</a><a href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">Twitch →</a><a href="https://instagram.com/vaasapubfighters" target="_blank" rel="noreferrer">Instagram →</a><a href="https://linktr.ee/VaasaPubFighters" target="_blank" rel="noreferrer">Linktree →</a></div></article>
-        <article class="contact-card"><h3>TekkenOnlineWeeklyt</h3><div class="contact-links"><a href="https://discord.gg/WAT85TTCrF" target="_blank" rel="noreferrer">Discord →</a></div></article>
-      </div>
     </section>
 
     <section class="event event--compact">
