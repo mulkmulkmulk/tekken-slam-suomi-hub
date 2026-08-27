@@ -598,9 +598,13 @@ function render() {
   app.querySelectorAll("[data-go]").forEach((button) => {
     button.addEventListener("click", () => {
       const next = button.dataset.go;
-      if (!views[next] || next === currentView) return;
+      if (!views[next]) return;
+      // Clicking "Valmentajat" while already viewing one coach's profile
+      // must still work -- it should drop back to the roster, not no-op
+      // just because currentView is already "coaches".
+      if (next === currentView && !selectedCoach) return;
       currentView = next;
-      if (next !== "coaches") selectedCoach = null;
+      selectedCoach = null;
       render();
       window.scrollTo({ top: 0, behavior: "smooth" });
       app.querySelector("#view")?.focus({ preventScroll: true });
