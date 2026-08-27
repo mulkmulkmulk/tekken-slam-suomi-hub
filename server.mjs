@@ -43,6 +43,12 @@ let twitchTokenCache = { token: "", expiresAt: 0 };
 let twitchLiveCache = { payload: null, expiresAt: 0 };
 
 const COACH_MEDIA_ORIGIN = "https://raw.githubusercontent.com/mulkmulkmulk/tekken-slam-suomi-valmentajat/main/docs/media";
+const COACH_DATA_URL = "https://raw.githubusercontent.com/mulkmulkmulk/tekken-slam-suomi-valmentajat/main/data/coaches.json";
+// The roster changes at most a few times a day right now, so a short cache
+// is enough to avoid hammering GitHub while still picking up new coaches
+// pushed to the valmentajat repo within a few minutes.
+const COACHES_CACHE_MS = 5 * 60 * 1000;
+let coachesCache = { payload: null, expiresAt: 0 };
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -163,6 +169,45 @@ async function proxyCoachMedia(req, res, requestPath) {
     console.error("Coach media proxy failed:", error);
     res.writeHead(502, { "Content-Type": "text/plain; charset=utf-8" });
     res.end("Valmentajamedian lataaminen epäonnistui");
+  }
+}
+
+async function getCoachesPayload() {
+  const now = Date.now();
+  if (coachesCache.payload && coachesCache.expiresAt > now) {
+    return coachesCache.payload;
+  }
+  const response = await fetch(COACH_DATA_URL, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`Coach data fetch failed (${response.status})`);
+  }
+  const payload = await response.json();
+  coachesCache = { payload, expiresAt: now + COACHES_CACHE_MS };
+  return payload;
+}
+
+async function serveCoaches(res) {
+  try {
+    const payload = await getCoachesPayload();
+    res.writeHead(200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    });
+    res.end(JSON.stringify(payload));
+  } catch (error) {
+    console.error("Coach data fetch failed:", error);
+    // Serve the last known-good roster instead of breaking the page if
+    // GitHub is briefly unreachable.
+    if (coachesCache.payload) {
+      res.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+      });
+      res.end(JSON.stringify(coachesCache.payload));
+      return;
+    }
+    res.writeHead(502, { "Content-Type": "application/json; charset=utf-8" });
+    res.end(JSON.stringify({ error: "Valmentajadataa ei voitu ladata" }));
   }
 }
 
@@ -314,22 +359,38 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (requestPath === "/api/coaches") {
+    await serveCoaches(res);
+    return;
+  }
+
   if (requestPath.startsWith("/coach-media/")) {
     await proxyCoachMedia(req, res, requestPath);
     return;
   }
 
+  // Only these three roots are servable directly. This used to fall through
+  // to a catch-all that served ANY file under the project root for anything
+  // else, including .env (real Twitch API secrets), server.mjs, package.json.
   let filePath;
+  let allowedRoot;
   if (requestPath === "/") {
     filePath = path.join(__dirname, "index.html");
+    allowedRoot = __dirname;
+  } else if (requestPath.startsWith("/src/")) {
+    filePath = path.join(__dirname, requestPath);
+    allowedRoot = __dirname;
   } else if (requestPath.startsWith("/video/") || requestPath.startsWith("/images/") || requestPath.startsWith("/players/")) {
     filePath = path.join(PUBLIC_DIR, requestPath);
+    allowedRoot = PUBLIC_DIR;
   } else {
-    filePath = path.join(__dirname, requestPath);
+    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("404 - Tiedostoa ei löytynyt");
+    return;
   }
 
   const normalizedPath = path.normalize(filePath);
-  if (!normalizedPath.startsWith(__dirname)) {
+  if (!normalizedPath.startsWith(allowedRoot) || path.basename(normalizedPath).startsWith(".")) {
     res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
     res.end("403 - Pääsy estetty");
     return;

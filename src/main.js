@@ -1,10 +1,57 @@
 import { players } from "./players.js";
-import { coaches } from "./coaches.js";
 
 const app = document.querySelector("#app");
 let currentView = "info";
 let selectedCoach = null;
 let twitchState = { status: "loading", updatedAt: null };
+
+// Coaches are fetched live from the tekken-slam-suomi-valmentajat repo's
+// generated data/coaches.json (via the /api/coaches proxy in server.mjs)
+// instead of being hand-copied here, so the roster never goes stale.
+const coachMediaBase = "/coach-media";
+const coachCharacterBase = `${coachMediaBase}/characters`;
+const ALL_CHARACTER_MOSAIC_SLUGS = ["kazuya", "jun", "xiaoyu", "king", "jin", "nina", "paul", "yoshimitsu", "hwoarang"];
+
+function mapCoach(raw) {
+  return {
+    slug: raw.slug,
+    name: raw.name,
+    tag: raw.tag,
+    mainCharacter: raw.mainCharacter,
+    allCharacters: Boolean(raw.allCharacters),
+    helpsAll: Boolean(raw.helpsAllCharacters),
+    characters: raw.characters,
+    experience: raw.experience,
+    specialty: raw.specialty,
+    style: raw.style,
+    availability: raw.availability,
+    description: raw.description,
+    discord: raw.discord,
+    poster: `${coachMediaBase}/${raw.slug}.jpg`,
+    posterWide: `${coachMediaBase}/${raw.slug}-wide.jpg`,
+    video: `${coachMediaBase}/${raw.slug}.mp4`,
+    characterImage: raw.mainCharacter ? `${coachCharacterBase}/${raw.mainCharacter}.png` : null,
+    altCharacterImages: (raw.altCharacters || []).map((slug) => ({ slug, url: `${coachCharacterBase}/${slug}-icon.png` })),
+    allCharacterMosaic: ALL_CHARACTER_MOSAIC_SLUGS.map((slug) => ({ slug, url: `${coachCharacterBase}/${slug}-icon.png` })),
+  };
+}
+
+let coaches = [];
+let coachesState = { status: "loading" };
+
+async function loadCoaches() {
+  try {
+    const response = await fetch("/api/coaches", { cache: "no-store" });
+    if (!response.ok) throw new Error(`status ${response.status}`);
+    const data = await response.json();
+    coaches = data.map(mapCoach);
+    coachesState = { status: "ready" };
+  } catch (error) {
+    console.warn("Coach data could not be loaded:", error);
+    coachesState = { status: coaches.length ? "ready" : "error" };
+  }
+  if (currentView === "coaches") render();
+}
 
 const escapeHtml = (value) => String(value ?? "")
   .replaceAll("&", "&amp;")
@@ -459,6 +506,25 @@ function coachProfileView(coach) {
 
 function coachesView() {
   if (selectedCoach) return coachProfileView(selectedCoach);
+
+  if (coachesState.status === "loading") {
+    return `
+    <section class="page-hero coaches-hero">
+      <p class="kicker">TEKKEN SLAM SUOMI</p>
+      <h1>Valitse valmentaja</h1>
+      <p>Ladataan valmentajia…</p>
+    </section>`;
+  }
+
+  if (coachesState.status === "error") {
+    return `
+    <section class="page-hero coaches-hero">
+      <p class="kicker">TEKKEN SLAM SUOMI</p>
+      <h1>Valitse valmentaja</h1>
+      <p>Valmentajadataa ei juuri nyt saatu ladattua. Yritä päivittää sivu hetken kuluttua.</p>
+    </section>`;
+  }
+
   return `
     <section class="page-hero coaches-hero">
       <p class="kicker">TEKKEN SLAM SUOMI</p>
@@ -574,3 +640,4 @@ function render() {
 render();
 refreshTwitchStatus();
 setInterval(() => refreshTwitchStatus(), 60_000);
+loadCoaches();
