@@ -401,6 +401,8 @@ nav button:hover, nav button.active { color: white; }
    can't leak into or collide with the rest of the site's styling. */
 
 .coach-hero {
+  max-width: 1240px;
+  margin: 0 auto;
   padding: 64px clamp(24px, 7vw, 110px) 24px;
   background: var(--coach-bg);
   border-bottom: 1px solid var(--coach-rule);
@@ -454,6 +456,8 @@ nav button:hover, nav button.active { color: white; }
 }
 
 .coach-roster-section {
+  max-width: 1240px;
+  margin: 0 auto;
   padding: 44px clamp(24px, 7vw, 110px) 100px;
   background: var(--coach-bg);
 }
@@ -724,6 +728,8 @@ nav button:hover, nav button.active { color: white; }
 /* ---------- coach profile page ---------- */
 
 .coach-profile-wrap {
+  max-width: 1240px;
+  margin: 0 auto;
   padding: 40px clamp(24px, 7vw, 110px) 100px;
   background: var(--coach-bg);
 }
