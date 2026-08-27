@@ -251,6 +251,8 @@ nav button:hover, nav button.active { color: white; }
 
 /* Info page video + schedule */
 .video-frame {
+  max-width: 1240px;
+  margin: 0 auto;
   overflow: hidden;
   border: 1px solid var(--line);
   background: #070709;
@@ -1026,6 +1028,41 @@ nav button:hover, nav button.active { color: white; }
   background: var(--coach-accent-strong);
   box-shadow: 0 10px 26px -10px rgba(232, 50, 63, 0.6);
   transform: translateY(-1px);
+}
+
+/* TEMPORARY A/B test: side-by-side video+stats on very wide windows, only
+   on the first two coaches (see COACH_LAYOUT_TEST in main.js) so both
+   options can be compared before picking one. Remove once decided --
+   below 1400px both fall back to the normal stacked layout untouched. */
+@media (min-width: 1400px) {
+  .coach-media-row[data-layout-test] {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+  .coach-media-row[data-layout-test] .coach-stage {
+    margin-top: 0;
+  }
+  .coach-media-row[data-layout-test] .coach-sheet {
+    margin-top: 0;
+    border-top: none;
+  }
+  .coach-media-row[data-layout-test] .coach-stat:first-child {
+    border-top: 1px solid var(--coach-rule);
+  }
+
+  .coach-media-row[data-layout-test="stacked-text"] .coach-stage { flex: 1 1 58%; }
+  .coach-media-row[data-layout-test="stacked-text"] .coach-sheet { flex: 1 1 42%; }
+  .coach-media-row[data-layout-test="stacked-text"] .coach-stat {
+    display: block;
+    padding: 16px 0;
+  }
+  .coach-media-row[data-layout-test="stacked-text"] .coach-stat-label {
+    margin-bottom: 6px;
+  }
+
+  .coach-media-row[data-layout-test="wide-text"] .coach-stage { flex: 1 1 45%; }
+  .coach-media-row[data-layout-test="wide-text"] .coach-sheet { flex: 1 1 55%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

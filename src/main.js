@@ -146,7 +146,7 @@ function infoView() {
         <p>Tutustu tapahtuman ideaan ja matkaan kohti Vaasan live-finaalia.</p>
       </div>
       <div class="video-frame">
-        <video controls preload="metadata" playsinline>
+        <video controls preload="metadata" playsinline poster="/video/tekken-slam-suomi-poster.jpg">
           <source src="/video/tekken-slam-suomi.mp4" type="video/mp4">
           Selaimesi ei tue HTML5-videota.
         </video>
@@ -420,6 +420,14 @@ function coachStat(label, value, emphasis = false) {
       </div>`;
 }
 
+// TEMPORARY: side-by-side layout A/B test on the first two coaches
+// (alphabetically) so the two options can be compared on a wide window
+// before picking one for everyone. Remove once a layout is chosen.
+const COACH_LAYOUT_TEST = {
+  "alika": "stacked-text", // label above value, video 58% / text 42%
+  "big-boss": "wide-text", // label beside value (as now), video 45% / text 55%
+};
+
 function coachProfileView(coach, index) {
   const mainLabel = coach.mainCharacter
     ? coach.mainCharacter.replaceAll("-", " ")
@@ -471,15 +479,17 @@ function coachProfileView(coach, index) {
       </div>
     </div>
 
-    <div class="coach-stage">${replay}</div>
+    <div class="coach-media-row"${COACH_LAYOUT_TEST[coach.slug] ? ` data-layout-test="${COACH_LAYOUT_TEST[coach.slug]}"` : ""}>
+      <div class="coach-stage">${replay}</div>
 
-    <div class="coach-sheet">
-      ${coachStat("Hahmot", coach.characters, true)}
-      ${coachStat("Kokemus", coach.experience)}
-      ${coachStat("Erikoisosaaminen", coach.specialty)}
-      ${coachStat("Valmennustyyli", coach.style)}
-      ${coachStat("Saatavuus", coach.availability)}
-      ${coachStat("Pelaajana", coach.description)}
+      <div class="coach-sheet">
+        ${coachStat("Hahmot", coach.characters, true)}
+        ${coachStat("Kokemus", coach.experience)}
+        ${coachStat("Erikoisosaaminen", coach.specialty)}
+        ${coachStat("Valmennustyyli", coach.style)}
+        ${coachStat("Saatavuus", coach.availability)}
+        ${coachStat("Pelaajana", coach.description)}
+      </div>
     </div>
 
     <div class="coach-cta-row">
