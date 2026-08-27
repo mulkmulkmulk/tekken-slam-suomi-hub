@@ -323,10 +323,10 @@ function infoView() {
 function playersView() {
   const live = livePlayers();
   return `
-    <section class="page-hero">
-      <p class="kicker">TEKKEN SLAM SUOMI</p>
-      <h1>Osallistujat</h1>
-      <p>${players.length} sisällöntuottajaa. Kuukausien harjoitusjakso. Lopuksi kaikki ratkaistaan Tekken 8 -turnauksessa.</p>
+    <section class="coach-hero">
+      <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Osallistujat</p>
+      <h1 class="coach-title">OSALLISTUJAT</h1>
+      <p class="coach-subhead">${players.length} osallistujaa treenaa kohti finaalia. Selaa profiileja ja katso ketkä ovat livenä juuri nyt.</p>
     </section>
 
     ${live.length ? `
