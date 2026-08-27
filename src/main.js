@@ -192,7 +192,7 @@ function infoView() {
       <div>
         <p class="kicker">LIVE-FINAALI JÄRJESTETÄÄN OSANA</p>
         <h2>Kahakka 3</h2>
-        <p>Tekken-tapahtuman järjestävät videopeliryhmät Wasa Game Scene ja Vaasa Pub Fighters. Vierailijat ovat tervetulleita seuraamaan toimintaa maksutta. Alla olevat tiedot (aikataulu, avoimet turnaukset, käytännön ohjeet) koskevat koko Kahakka 3 -tapahtumaa, jonka osana finaalimme pelataan.</p>
+        <p>Tekken-tapahtuman järjestävät videopeliryhmät TekkenOnlineWeeklyt ja Vaasa Pub Fighters. Vierailijat ovat tervetulleita seuraamaan toimintaa maksutta.</p>
       </div>
       <a class="button button--primary" href="https://www.start.gg/tournament/kahakka-3/details" target="_blank" rel="noreferrer">Kahakka 3 start.gg →</a>
     </section>
@@ -207,7 +207,7 @@ function infoView() {
         <div><span>Venue</span><strong><a class="inline-link inline-link--strong" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Room Vaasa ↗</a></strong><p><a class="inline-link" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Avaa Google Maps →</a></p></div>
         <div><span>Yleisö</span><strong>Vapaa pääsy</strong><p>Vierailijat voivat tulla seuraamaan toimintaa maksutta.</p></div>
         <div><span>Striimi</span><strong>Vaasa Pub Fighters</strong><p><a class="inline-link" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">twitch.tv/vaasapubfighters →</a></p></div>
-        <div><span>Järjestäjät</span><strong>VPF × WGS</strong><p>Vaasa Pub Fighters ja Wasa Game Scene.</p></div>
+        <div><span>Järjestäjät</span><strong>VPF × TOW</strong><p>Vaasa Pub Fighters ja TekkenOnlineWeeklyt.</p></div>
       </div>
     </section>
 
@@ -224,64 +224,6 @@ function infoView() {
       <div class="venue-actions"><a class="button button--secondary" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Roomin sivut →</a><a class="button button--secondary" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Smash Room Vaasa kartalla →</a></div>
     </section>
 
-    <section class="section day-schedule">
-      <div class="section-heading">
-        <div><p class="kicker">KAHAKKA 3</p><h2>Päivän aikataulu</h2></div>
-        <p>Kahakka 3:n julkaistu tapahtumapäivän aikataulu.</p>
-      </div>
-      <div class="schedule-list">
-        <div><time>15:00</time><span>Ovet aukeavat & casual-matsit</span></div>
-        <div><time>17:00</time><span>Poolit 1 & 2 alkavat</span></div>
-        <div><time>18:00</time><span>Poolit 3 & 4 alkavat</span></div>
-        <div><time>19:00</time><span>Top 16 alkaa</span></div>
-        <div><time>21:00</time><span>Top 8 alkaa</span></div>
-        <div><time>23:00</time><span>Tapahtuma päättyy</span></div>
-      </div>
-      <p class="notice"><strong>Huom:</strong> Kahakka 3:n turnausilmoittautuminen sulkeutuu tapahtumaa edeltävänä keskiviikkona klo 23:59 EET. Tarkista ajantasaiset tiedot start.gg:stä.</p>
-    </section>
-
-    <section class="section open-tournaments">
-      <div class="section-heading">
-        <div><p class="kicker">MUUTA PELATTAVAA KAHAKKA 3:ssa</p><h2>Avoimet Tekken 8 -turnaukset</h2></div>
-        <p>Nämä ovat Kahakka 3:n avoimia turnauksia ja erillisiä Tekken Slam Suomi -kutsufinaalista.</p>
-      </div>
-      <div class="tournament-grid">
-        <article class="tournament-card tournament-card--main">
-          <p class="eyebrow">TEKKEN 8 MAIN TOURNAMENT</p>
-          <h3>Pääturnaus</h3>
-          <ul>
-            <li>10 € osallistumismaksu: 5 € venuelle ja 5 € palkintopottiin. Maksu paikan päällä, vain käteinen.</li>
-            <li>Palkinnot kolmelle parhaalle.</li>
-            <li>Oman setupin tuomalla osallistuminen pääturnaukseen on maksuton — ota etukäteen yhteyttä järjestäjiin.</li>
-            <li>64 pelaajan yläraja.</li>
-            <li>Turnaus pelataan PS5-konsoleilla. Ota mukaan PS5-yhteensopiva ohjain.</li>
-          </ul>
-        </article>
-        <article class="tournament-card">
-          <p class="eyebrow">TEKKEN 8 AMATEURS</p>
-          <h3>Amatööriturnaus</h3>
-          <ul>
-            <li>Avoin pelaajille, joilla ei ole turnauskokemusta.</li>
-            <li>Maksuton osallistuminen.</li>
-            <li>16 pelaajan raja.</li>
-            <li>Ilmoittautuminen onnistuu myös ilman start.gg-tiliä ottamalla yhteyttä Vaasa Pub Fightersiin tai paikan päällä.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section practical-info">
-      <div class="section-heading">
-        <div><p class="kicker">HYVÄ TIETÄÄ</p><h2>Ennen kuin tulet paikalle</h2></div>
-        <p>Jos osallistut Kahakka 3:n avoimiin turnauksiin tai saavut katsojaksi, nämä kannattaa tietää.</p>
-      </div>
-      <div class="practical-list">
-        <div><strong>PS5-ohjain mukaan</strong><p>Ota oma PS5-yhteensopiva ohjain. Lainattavia ohjaimia on rajallisesti. PS4-yhteensopivista laitteista kannattaa ilmoittaa järjestäjille etukäteen adapteria varten.</p></div>
-        <div><strong>Casual-matsit</strong><p>Turnauspelaamisen lisäksi paikan päällä voi pelata rentoja matseja sivussa.</p></div>
-        <div><strong>Discord suositeltu</strong><p>Vaasa Pub Fightersin Discordiin liittyminen on erittäin suositeltavaa, mutta ei pakollista.</p></div>
-      </div>
-    </section>
-
     <section class="section contacts-section">
       <div class="section-heading">
         <div><p class="kicker">LISÄTIEDOT & YHTEYSTIEDOT</p><h2>Tapahtuman järjestäjät</h2></div>
@@ -289,7 +231,7 @@ function infoView() {
       </div>
       <div class="contact-grid">
         <article class="contact-card"><h3>Vaasa Pub Fighters</h3><div class="contact-links"><a href="https://discord.gg/Wzkn8Es" target="_blank" rel="noreferrer">Discord →</a><a href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">Twitch →</a><a href="https://instagram.com/vaasapubfighters" target="_blank" rel="noreferrer">Instagram →</a><a href="https://linktr.ee/VaasaPubFighters" target="_blank" rel="noreferrer">Linktree →</a></div></article>
-        <article class="contact-card"><h3>Wasa Game Scene</h3><div class="contact-links"><a href="https://discord.gg/CeYFkk6PkP" target="_blank" rel="noreferrer">Discord →</a><a href="https://instagram.com/wasagamescene" target="_blank" rel="noreferrer">Instagram →</a></div></article>
+        <article class="contact-card"><h3>TekkenOnlineWeeklyt</h3><div class="contact-links"><a href="https://discord.gg/WAT85TTCrF" target="_blank" rel="noreferrer">Discord →</a></div></article>
       </div>
     </section>
 
