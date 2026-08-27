@@ -1,7 +1,10 @@
 // Tekken Slam Suomi -osallistujat.
 // Lisää uusi osallistuja kopioimalla yksi olio ja täydentämällä tiedot.
 // Live-tiedot (isLive, streamTitle, viewerCount) korvataan myöhemmin Twitch API -integraatiolla.
-// `coach`: streamerin oma valmentaja (nimi valmentajat-projektista, esim. "Mauste").
+// `coach`: streamerin oma valmentaja -- valmentajan SLUG (ei nimi!), esim. "mauste",
+// "erkka", "ka-fu". Slugin näkee valmentajan profiilisivun URL:sta tai
+// tekken-slam-suomi-valmentajat-repon build/coach-map.mjs:stä. Oikea slug tekee
+// rivistä napin joka vie suoraan kyseisen valmentajan sivulle.
 // Jätetty tyhjäksi kunnes parit on julkistettu -- tyhjänä kenttä ei näy sivulla ollenkaan.
 
 export const players = [
@@ -12,7 +15,7 @@ export const players = [
     twitchChannel: "eryoces",
     instagram: "erythewolf",
     tiktok: "Eryoces",
-    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    coach: "mauste", // TESTIARVO -- vaihda oikeaan pariin kun julkistetaan
     isLive: false,
     streamTitle: "",
     viewerCount: 0,

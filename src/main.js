@@ -50,7 +50,9 @@ async function loadCoaches() {
     console.warn("Coach data could not be loaded:", error);
     coachesState = { status: coaches.length ? "ready" : "error" };
   }
-  if (currentView === "coaches") render();
+  // Also re-render the players view once coach data lands: player cards
+  // link to a coach's page and need the loaded roster to resolve that link.
+  if (currentView === "coaches" || currentView === "players") render();
 }
 
 const escapeHtml = (value) => String(value ?? "")
@@ -77,9 +79,19 @@ const socialLink = (label, url, handle) => `
   </a>
 `;
 
-const coachLine = (player) => player.coach
-  ? `<div class="player-coach"><span>Valmentaja</span><strong>${escapeHtml(player.coach)}</strong></div>`
-  : "";
+const coachLine = (player) => {
+  if (!player.coach) return "";
+  const coach = coaches.find((c) => c.slug === player.coach);
+  if (!coach) {
+    // Coach data hasn't loaded yet (or the slug doesn't match) -- show the
+    // raw value as plain text instead of a dead-looking button.
+    return `<div class="player-coach"><span>Valmentaja</span><strong>${escapeHtml(player.coach)}</strong></div>`;
+  }
+  return `
+    <button type="button" class="player-coach player-coach--link" data-view-coach="${coach.slug}">
+      <span>Valmentaja</span><strong>${escapeHtml(coach.name)} →</strong>
+    </button>`;
+};
 
 const socialLinks = (player) => [
   player.twitchChannel && socialLink("Twitch", `https://twitch.tv/${player.twitchChannel}`, player.twitchChannel),
@@ -606,6 +618,17 @@ function render() {
   app.querySelectorAll("[data-coach]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedCoach = coaches.find((coach) => coach.slug === button.dataset.coach) || null;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  app.querySelectorAll("[data-view-coach]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const coach = coaches.find((c) => c.slug === button.dataset.viewCoach);
+      if (!coach) return;
+      currentView = "coaches";
+      selectedCoach = coach;
       render();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
