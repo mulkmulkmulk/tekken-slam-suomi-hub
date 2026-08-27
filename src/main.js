@@ -543,7 +543,7 @@ function coachesView() {
     <section class="coach-hero">
       <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Valmentaja Rosteri</p>
       <h1 class="coach-title">VALITSE<br><em>VALMENTAJASI</em></h1>
-      <p class="coach-subhead">${coaches.length} valmentajaa auttaa osallistujia. Selaa profiileja ja katso hahmot, tyylin ja pelinäytteen.</p>
+      <p class="coach-subhead">${coaches.length} valmentajaa jakaa osaamistaan osallistujille. Selaa profiileja ja tutustu valmentajan hahmoihin, tyyliin sekä esittelyvideoon.</p>
     </section>
     <section class="coach-roster-section">
       <div class="coach-roster">${coaches.map((c, i) => coachCard(c, i)).join("")}</div>
