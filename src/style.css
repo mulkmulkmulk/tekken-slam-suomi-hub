@@ -621,11 +621,13 @@ nav button:hover, nav button.active { color: white; }
   /* Smaller/repositioned than the tile version so the full "+ Kaikki
      hahmot" text clears the portrait's overflow:hidden edges instead of
      getting clipped -- the 168px profile portrait is narrower than what
-     the original ribbon geometry was sized for. */
-  top: 38px;
-  right: -2px;
-  width: 105px;
-  font-size: 9px;
+     the original ribbon geometry was sized for. Kept close to the
+     original top-right corner placement rather than pushed down over the
+     character art. */
+  top: 24px;
+  right: 4px;
+  width: 80px;
+  font-size: 8px;
 }
 
 /* Split tile: main character on the left, "plays everyone" panel on the right. */
@@ -766,7 +768,7 @@ nav button:hover, nav button.active { color: white; }
 @media (max-width: 520px) {
   .coach-profile-head { grid-template-columns: 96px 1fr; gap: 16px; }
   .coach-profile-portrait .coach-tile-mosaic-badge { font-size: 11px; }
-  .coach-profile-portrait .coach-all-ribbon { top: 36px; right: 4px; width: 95px; font-size: 8px; }
+  .coach-profile-portrait .coach-all-ribbon { top: 18px; right: 6px; width: 55px; font-size: 6px; }
 }
 .coach-profile-portrait {
   position: relative;
