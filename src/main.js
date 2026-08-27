@@ -64,6 +64,9 @@ const formatViewers = (count) => new Intl.NumberFormat("fi-FI").format(count || 
 
 const avatar = (player, large = false) => `
   <div class="avatar ${large ? "avatar--large" : ""}" aria-hidden="true">
+    ${player.avatarUrl
+      ? `<img src="${escapeHtml(player.avatarUrl)}" alt="" loading="lazy" onerror="this.remove()">`
+      : ""}
     <span>${player.initials}</span>
   </div>
 `;
@@ -79,6 +82,7 @@ const socialLinks = (player) => [
   player.instagram && socialLink("Instagram", `https://instagram.com/${player.instagram}`, `@${player.instagram}`),
   player.tiktok && socialLink("TikTok", `https://www.tiktok.com/@${player.tiktok}`, `@${player.tiktok}`),
   player.youtube && socialLink("YouTube", `https://www.youtube.com/@${player.youtube}`, player.youtube),
+  player.bluesky && socialLink("Bluesky", `https://bsky.app/profile/${player.bluesky}`, `@${player.bluesky}`),
 ].filter(Boolean).join("");
 
 const playerCard = (player) => `
@@ -135,7 +139,7 @@ function infoView() {
         </div>
       </div>
       <div class="hero__graphic" aria-hidden="true">
-        <div class="hero__number">08</div>
+        <div class="hero__number">${String(players.length).padStart(2, "0")}</div>
         <div class="hero__word">OSALLISTUJAA</div>
       </div>
     </section>
@@ -161,7 +165,7 @@ function infoView() {
       <div class="info-grid">
         <article class="info-card"><strong>01</strong><h3>Valmennus</h3><p>Jokainen streamer saa tuekseen kokeneen kotimaisen Tekken-pelaajan. Valmentajat auttavat rakentamaan hahmo-osaamista, pelisuunnitelmaa ja turnausvalmiutta.</p></article>
         <article class="info-card"><strong>02</strong><h3>Treenikausi</h3><p>Syys-, loka- ja marraskuun aikana streamerit harjoittelevat Tekken 8:aa ja striimaavat treenejään. Seuraa matkaa osallistujien omilta kanavilta.</p></article>
-        <article class="info-card"><strong>03</strong><h3>Live-finaali</h3><p>Kuukausien harjoittelu huipentuu 20.11.2026 Vaasassa. Kahdeksan osallistujaa kohtaavat toisensa osana Kahakka 3 -tapahtumaa ja taistelevat Tekken Slam Suomi -mestaruudesta.</p></article>
+        <article class="info-card"><strong>03</strong><h3>Live-finaali</h3><p>Kuukausien harjoittelu huipentuu 20.11.2026 Vaasassa. ${players.length} osallistujaa kohtaavat toisensa osana Kahakka 3 -tapahtumaa ja taistelevat Tekken Slam Suomi -mestaruudesta.</p></article>
       </div>
     </section>
 
@@ -302,7 +306,7 @@ function playersView() {
     <section class="page-hero">
       <p class="kicker">TEKKEN SLAM SUOMI</p>
       <h1>Osallistujat</h1>
-      <p>Kahdeksan sisällöntuottajaa. Kuukausien harjoitusjakso. Lopuksi kaikki ratkaistaan Tekken 8 -turnauksessa.</p>
+      <p>${players.length} sisällöntuottajaa. Kuukausien harjoitusjakso. Lopuksi kaikki ratkaistaan Tekken 8 -turnauksessa.</p>
     </section>
 
     ${live.length ? `
@@ -558,6 +562,7 @@ function applyTwitchData(data) {
     player.game = live?.game || "";
     player.startedAt = live?.startedAt || null;
     player.thumbnail = live?.thumbnail || "";
+    player.avatarUrl = live?.avatarUrl || "";
   }
 }
 

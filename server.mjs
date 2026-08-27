@@ -37,6 +37,10 @@ const TWITCH_LOGINS = [
   "huntari_",
   "r1sbe",
   "socaw",
+  "iroaoyamada",
+  "the_katjaanaa",
+  "sitragaming",
+  "mr_randomizer_",
 ];
 const TWITCH_CACHE_MS = 30_000;
 let twitchTokenCache = { token: "", expiresAt: 0 };
@@ -304,12 +308,68 @@ async function fetchTwitchStreams() {
   };
 }
 
+// Profile pictures barely change, so they get their own much longer cache
+// separate from the 30s live-status one -- no need to re-fetch on every poll.
+const TWITCH_AVATAR_CACHE_MS = 60 * 60 * 1000;
+let twitchAvatarCache = { avatars: null, expiresAt: 0 };
+
+async function fetchTwitchAvatars() {
+  const url = new URL("https://api.twitch.tv/helix/users");
+  for (const login of TWITCH_LOGINS) url.searchParams.append("login", login);
+
+  let token = await getTwitchAppToken();
+  let response = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}`, "Client-Id": TWITCH_CLIENT_ID },
+  });
+
+  if (response.status === 401) {
+    twitchTokenCache = { token: "", expiresAt: 0 };
+    token = await getTwitchAppToken(true);
+    response = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}`, "Client-Id": TWITCH_CLIENT_ID },
+    });
+  }
+
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`Twitch Get Users failed (${response.status}): ${detail}`);
+  }
+
+  const data = await response.json();
+  const avatars = {};
+  for (const user of data.data || []) {
+    avatars[String(user.login || "").toLowerCase()] = user.profile_image_url || null;
+  }
+  return avatars;
+}
+
+async function getTwitchAvatars() {
+  const now = Date.now();
+  if (twitchAvatarCache.avatars && twitchAvatarCache.expiresAt > now) {
+    return twitchAvatarCache.avatars;
+  }
+  const avatars = await fetchTwitchAvatars();
+  twitchAvatarCache = { avatars, expiresAt: now + TWITCH_AVATAR_CACHE_MS };
+  return avatars;
+}
+
 async function getTwitchLivePayload() {
   const now = Date.now();
   if (twitchLiveCache.payload && twitchLiveCache.expiresAt > now) {
     return twitchLiveCache.payload;
   }
   const payload = await fetchTwitchStreams();
+
+  try {
+    const avatars = await getTwitchAvatars();
+    for (const [login, player] of Object.entries(payload.players)) {
+      player.avatarUrl = avatars[login] || null;
+    }
+  } catch (error) {
+    // Avatars are a nice-to-have -- don't let a failure here break live status.
+    console.error("Twitch avatar fetch failed:", error);
+  }
+
   twitchLiveCache = { payload, expiresAt: now + TWITCH_CACHE_MS };
   return payload;
 }
