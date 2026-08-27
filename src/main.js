@@ -352,19 +352,9 @@ function playersView() {
 
     <section class="section">
       <div class="section-heading">
-        <div><p class="kicker">VARMISTUNEET OSALLISTUJAT</p><h2>Tekken Slam Suomi</h2></div>
-        <p>${players.length} varmistunutta osallistujaa</p>
+        <div><p class="kicker">TEKKEN SLAM SUOMI</p><h2>Osallistujat</h2></div>
       </div>
       <div class="players-grid">${sortedPlayers().map(playerCard).join("")}</div>
-    </section>
-
-    <section class="journey">
-      <div><p class="kicker">HARJOITUSKAUSI</p><h2>Kehitys näkyväksi.</h2></div>
-      <div class="journey__steps">
-        <div><strong>01</strong><span>HARJOITTELE</span><p>Striimejä, valmennusta ja Tekken 8 -pelejä koko harjoituskauden ajan.</p></div>
-        <div><strong>02</strong><span>KEHITY</span><p>Seuraa hahmovalintoja, oppimista ja osallistujien henkilökohtaisia virstanpylväitä.</p></div>
-        <div><strong>03</strong><span>KILPAILE</span><p>Harjoituskausi huipentuu Tekken Slam Suomi -finaaliturnaukseen.</p></div>
-      </div>
     </section>
   `;
 }
@@ -547,7 +537,7 @@ function coachesView() {
     </section>
     <section class="coach-roster-section">
       <div class="coach-roster">${coaches.map((c, i) => coachCard(c, i)).join("")}</div>
-      <p class="coach-source-note">Valmentajien profiilit perustuvat Tekken Slam Suomi -valmentajahaun tietoihin. Valitse kortti nähdäksesi tarkemman esittelyn ja replayn.</p>
+      <p class="coach-source-note">Valmentajien profiilit perustuvat Tekken Slam Suomi -valmentajahaun tietoihin.</p>
     </section>`;
 }
 
