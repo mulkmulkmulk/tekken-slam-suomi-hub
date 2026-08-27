@@ -2,6 +2,27 @@
 
 Single-page tapahtumasivuston prototyyppi.
 
+## Palvelimen päivitys (siirtymä zip-toimituksesta git-pohjaiseen)
+
+Repo on julkinen osoitteessa:
+https://github.com/mulkmulkmulk/tekken-slam-suomi-hub
+
+Jos palvelimella on aiemmin käynnistetty versio suoraan zip-paketista (ei vielä git-repo), näin siirryt git-pohjaiseen:
+
+1. **Varmuuskopioi `.env`-tiedosto talteen** (sisältää Twitch-tunnukset) -- se ei tule gitin mukana eikä koskaan saa mennä sinne.
+2. Kloonaa repo joko täysin uuteen kansioon tai vanhan tilalle:
+   ```bash
+   git clone https://github.com/mulkmulkmulk/tekken-slam-suomi-hub.git
+   ```
+3. Kopioi talteen otettu `.env` uuden kloonin juureen.
+4. Käynnistä palvelin samalla tavalla kuin ennenkin (`npm start`, tai miten sitä tähän asti on pyöritetty taustalla).
+
+**Jatkossa päivitys on vain:**
+```bash
+git pull
+```
+ja palvelimen uudelleenkäynnistys -- ei enää zip-tiedostojen käsin kopiointia.
+
 ## Käynnistys
 
 ```bash
