@@ -872,6 +872,13 @@ nav button:hover, nav button.active { color: white; }
   padding: 28px;
   background: var(--coach-bg-elev);
 }
+/* `display: flex` above overrides the browser's default [hidden]{display:none}
+   rule (author styles beat the UA stylesheet even at equal specificity), so
+   without this the error box showed permanently regardless of the `hidden`
+   attribute main.js toggles on video error. */
+.coach-video-error[hidden] {
+  display: none;
+}
 .coach-video-error strong {
   font-family: "Oswald", sans-serif;
   font-weight: 600;
