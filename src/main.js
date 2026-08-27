@@ -325,7 +325,7 @@ function playersView() {
   return `
     <section class="coach-hero">
       <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Osallistujat</p>
-      <h1 class="coach-title">OSALLISTUJAT</h1>
+      <h1 class="coach-title">TUTUSTU<br><em>OSALLISTUJIIN</em></h1>
       <p class="coach-subhead">${players.length} osallistujaa treenaa kohti finaalia. Selaa profiileja ja katso ketkä ovat livenä juuri nyt.</p>
     </section>
 
@@ -543,7 +543,7 @@ function coachesView() {
     <section class="coach-hero">
       <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Valmentaja Rosteri</p>
       <h1 class="coach-title">VALITSE<br><em>VALMENTAJASI</em></h1>
-      <p class="coach-subhead">Valitse kortti, niin näet valmentajan jättämät tiedot sekä lyhyen pelinäytteen.</p>
+      <p class="coach-subhead">${coaches.length} valmentajaa auttaa osallistujia. Valitse kortti nähdäksesi hahmot, tyylin ja pelinäytteen.</p>
     </section>
     <section class="coach-roster-section">
       <div class="coach-roster">${coaches.map((c, i) => coachCard(c, i)).join("")}</div>
