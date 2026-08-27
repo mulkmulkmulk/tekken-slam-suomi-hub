@@ -167,7 +167,6 @@ function infoView() {
     <section class="section video-section">
       <div class="section-heading">
         <div><p class="kicker">ESITTELYVIDEO</p><h2>Katso mistä on kyse</h2></div>
-        <p>Tutustu tapahtuman ideaan ja matkaan kohti Vaasan live-finaalia.</p>
       </div>
       <div class="video-frame">
         <video controls preload="metadata" playsinline poster="/video/tekken-slam-suomi-poster.jpg">
@@ -189,28 +188,11 @@ function infoView() {
       </div>
     </section>
 
-    <section class="section schedule-section">
-      <div class="section-heading">
-        <div><p class="kicker">MATKA FINAALIIN</p><h2>Syksy 2026</h2></div>
-        <p>Harjoituskausi näkyy striimeissä, ja marraskuussa kaikki ratkaistaan yleisön edessä.</p>
-      </div>
-      <div class="timeline">
-        <article class="timeline__item">
-          <div class="timeline__date">SYYS–MARRASKUU</div>
-          <div class="timeline__content"><p class="eyebrow">TREENIKAUSI</p><h3>Harjoittelu käyntiin</h3><p>Streamerit treenaavat valmentajiensa kanssa ja pelaavat Tekken 8:aa suorissa lähetyksissään koko kauden ajan.</p></div>
-        </article>
-        <article class="timeline__item timeline__item--final">
-          <div class="timeline__date">20.11.2026</div>
-          <div class="timeline__content"><p class="eyebrow">LIVE-FINAALI · VAASA</p><h3>Tekken Slam Suomi × Kahakka 3</h3><p>Tekken Slam Suomi huipentuu Smash Room Vaasassa Kahakka 3 -tapahtuman yhteydessä järjestettävään live-finaaliin.</p></div>
-        </article>
-      </div>
-    </section>
-
     <section class="kahakka-feature">
       <div>
         <p class="kicker">LIVE-FINAALI JÄRJESTETÄÄN OSANA</p>
         <h2>Kahakka 3</h2>
-        <p>Tekken-tapahtuman järjestävät videopeliryhmät Wasa Game Scene ja Vaasa Pub Fighters. Vierailijat ovat tervetulleita seuraamaan toimintaa maksutta.</p>
+        <p>Tekken-tapahtuman järjestävät videopeliryhmät Wasa Game Scene ja Vaasa Pub Fighters. Vierailijat ovat tervetulleita seuraamaan toimintaa maksutta. Alla olevat tiedot (aikataulu, avoimet turnaukset, käytännön ohjeet) koskevat koko Kahakka 3 -tapahtumaa, jonka osana finaalimme pelataan.</p>
       </div>
       <a class="button button--primary" href="https://www.start.gg/tournament/kahakka-3/details" target="_blank" rel="noreferrer">Kahakka 3 start.gg →</a>
     </section>
@@ -314,7 +296,7 @@ function infoView() {
     <section class="event event--compact">
       <p class="kicker kicker--live"><span></span> HARJOITUSKAUSI</p>
       <h2>${liveCount ? `${liveCount} osallistujaa on juuri nyt livessä` : "Seuraa harjoittelua suorana"}</h2>
-      <p>${liveCount ? "Katso käynnissä olevat harjoitusstriimit ja seuraa kehitystä kohti finaalia." : "Osallistujien Twitch-kanavat löytyvät sivulta jo nyt. Automaattinen live-tila lisätään seuraavaksi."}</p>
+      <p>${liveCount ? "Katso käynnissä olevat harjoitusstriimit ja seuraa kehitystä kohti finaalia." : "Käy katsomassa osallistujien profiilit ja Twitch-kanavat."}</p>
       <button class="button button--primary" type="button" data-go="players">Osallistujat</button>
     </section>
   `;
