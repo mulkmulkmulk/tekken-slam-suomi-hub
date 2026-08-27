@@ -80,7 +80,9 @@ const socialLink = (label, url, handle) => `
 `;
 
 const coachLine = (player) => {
-  if (!player.coach) return "";
+  if (!player.coach) {
+    return `<div class="player-coach player-coach--pending"><span>Valmentaja</span><strong>Ilmoitetaan pian</strong></div>`;
+  }
   const coach = coaches.find((c) => c.slug === player.coach);
   if (!coach) {
     // Coach data hasn't loaded yet (or the slug doesn't match) -- show the

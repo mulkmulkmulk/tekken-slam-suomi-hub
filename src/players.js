@@ -5,7 +5,8 @@
 // "erkka", "ka-fu". Slugin näkee valmentajan profiilisivun URL:sta tai
 // tekken-slam-suomi-valmentajat-repon build/coach-map.mjs:stä. Oikea slug tekee
 // rivistä napin joka vie suoraan kyseisen valmentajan sivulle.
-// Jätetty tyhjäksi kunnes parit on julkistettu -- tyhjänä kenttä ei näy sivulla ollenkaan.
+// Jätetty tyhjäksi kunnes parit on julkistettu -- tyhjänä sivu näyttää
+// "Valmentaja: Ilmoitetaan pian" -placeholderin, ei piilota riviä kokonaan.
 
 export const players = [
   {
@@ -15,7 +16,7 @@ export const players = [
     twitchChannel: "eryoces",
     instagram: "erythewolf",
     tiktok: "Eryoces",
-    coach: "mauste", // TESTIARVO -- vaihda oikeaan pariin kun julkistetaan
+    coach: "",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
