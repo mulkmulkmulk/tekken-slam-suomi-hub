@@ -12,6 +12,32 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥋</text></svg>" />
     <title>Tekken Slam Suomi – Matka turnaukseen</title>
     <link rel="stylesheet" href="/src/style.css" />
+    <!-- Lets Google show the final's date/venue directly in search results
+         (rich result), not just a generic link. Add a full street "address"
+         sub-field under location once known -- Google prefers it, though
+         it's not strictly required for basic eligibility. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Tekken Slam Suomi -live-finaali",
+        "startDate": "2026-11-20",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Smash Room Vaasa",
+          "url": "https://smashroom.fi/"
+        },
+        "description": "Suomen kovimmat streamaajat saavat kotimaiset arvostetut Tekken-pelaajat valmentajikseen. Harjoituskausi huipentuu live-finaaliin 20.11.2026 Vaasassa osana Kahakka 3 -tapahtumaa.",
+        "image": ["/video/tekken-slam-suomi-poster.jpg"],
+        "organizer": [
+          { "@type": "Organization", "name": "Vaasa Pub Fighters", "url": "https://twitch.tv/vaasapubfighters" },
+          { "@type": "Organization", "name": "TekkenOnlineWeeklyt", "url": "https://discord.gg/WAT85TTCrF" }
+        ],
+        "isAccessibleForFree": true
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

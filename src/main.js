@@ -1,6 +1,14 @@
 import { players } from "./players.js";
 
 const app = document.querySelector("#app");
+
+// CSS's scroll-behavior:smooth doesn't cover JS-driven scrollTo calls --
+// respect prefers-reduced-motion here too instead of always animating.
+function scrollToTop() {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+}
+
 let currentView = "info";
 let selectedCoach = null;
 let twitchState = { status: "loading", updatedAt: null };
@@ -474,19 +482,21 @@ function coachesView() {
 }
 
 function shell(content) {
+  const current = (view) => currentView === view ? ' aria-current="page"' : "";
   return `
+    <a class="skip-link" href="#view">Siirry sisältöön</a>
     <header class="site-header">
       <button class="brand brand--button" type="button" data-go="info" aria-label="Tekken Slam Suomi etusivulle">TEKKEN SLAM <span>SUOMI</span></button>
       <nav aria-label="Päänavigaatio">
-        <button type="button" data-go="info" class="${currentView === "info" ? "active" : ""}">Info</button>
-        <button type="button" data-go="players" class="${currentView === "players" ? "active" : ""}">Osallistujat</button>
-        <button type="button" data-go="coaches" class="${currentView === "coaches" ? "active" : ""}">Valmentajat</button>
+        <button type="button" data-go="info" class="${currentView === "info" ? "active" : ""}"${current("info")}>Info</button>
+        <button type="button" data-go="players" class="${currentView === "players" ? "active" : ""}"${current("players")}>Osallistujat</button>
+        <button type="button" data-go="coaches" class="${currentView === "coaches" ? "active" : ""}"${current("coaches")}>Valmentajat</button>
       </nav>
       <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav">Valikko</button>
       <div class="mobile-nav" id="mobile-nav" hidden>
-        <button type="button" data-go="info">Info</button>
-        <button type="button" data-go="players">Osallistujat</button>
-        <button type="button" data-go="coaches">Valmentajat</button>
+        <button type="button" data-go="info"${current("info")}>Info</button>
+        <button type="button" data-go="players"${current("players")}>Osallistujat</button>
+        <button type="button" data-go="coaches"${current("coaches")}>Valmentajat</button>
       </div>
     </header>
     <main id="view" tabindex="-1">${content}</main>
@@ -538,7 +548,7 @@ function render() {
       currentView = next;
       selectedCoach = null;
       render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTop();
       app.querySelector("#view")?.focus({ preventScroll: true });
     });
   });
@@ -547,7 +557,7 @@ function render() {
     button.addEventListener("click", () => {
       selectedCoach = coaches.find((coach) => coach.slug === button.dataset.coach) || null;
       render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTop();
     });
   });
 
@@ -558,7 +568,7 @@ function render() {
       currentView = "coaches";
       selectedCoach = coach;
       render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTop();
     });
   });
 
@@ -566,7 +576,7 @@ function render() {
     button.addEventListener("click", () => {
       selectedCoach = null;
       render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTop();
     });
   });
 
