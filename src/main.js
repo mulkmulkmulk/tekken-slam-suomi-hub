@@ -600,10 +600,12 @@ function render() {
     });
   });
 
-  app.querySelector("[data-back-coaches]")?.addEventListener("click", () => {
-    selectedCoach = null;
-    render();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  app.querySelectorAll("[data-back-coaches]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedCoach = null;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   });
 
   const coachVideo = app.querySelector("[data-coach-video]");
