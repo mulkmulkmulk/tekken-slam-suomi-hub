@@ -109,6 +109,7 @@ const socialLinks = (player) => [
   player.tiktok && socialLink("TikTok", `https://www.tiktok.com/@${player.tiktok}`, `@${player.tiktok}`),
   player.youtube && socialLink("YouTube", `https://www.youtube.com/@${player.youtube}`, player.youtube),
   player.bluesky && socialLink("Bluesky", `https://bsky.app/profile/${player.bluesky}`, `@${player.bluesky}`),
+  player.kick && socialLink("Kick", `https://kick.com/${player.kick}`, player.kick),
 ].filter(Boolean).join("");
 
 const playerCard = (player) => `

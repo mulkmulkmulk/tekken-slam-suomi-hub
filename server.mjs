@@ -42,6 +42,7 @@ const TWITCH_LOGINS = [
   "sitragaming",
   "mr_randomizer_",
   "lancelotssb",
+  "z33cus",
 ];
 const TWITCH_CACHE_MS = 30_000;
 let twitchTokenCache = { token: "", expiresAt: 0 };

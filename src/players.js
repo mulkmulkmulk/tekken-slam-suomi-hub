@@ -163,4 +163,18 @@ export const players = [
     streamTitle: "",
     viewerCount: 0,
   },
+  {
+    id: "z33cus",
+    name: "✞Z33cus✞ [AHA!] — 17.36",
+    initials: "Z3",
+    twitchChannel: "z33cus",
+    instagram: "z33cus_viral",
+    tiktok: "z33cus",
+    youtube: "z33cus",
+    kick: "z33cus",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    isLive: false,
+    streamTitle: "",
+    viewerCount: 0,
+  },
 ];
