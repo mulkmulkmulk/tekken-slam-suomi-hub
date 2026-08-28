@@ -152,7 +152,7 @@ export const players = [
   },
   {
     id: "lancelot",
-    name: "Lancelot — 11.58",
+    name: "Lancelot",
     initials: "L1",
     twitchChannel: "lancelotssb",
     instagram: "lancelotssb",
@@ -165,7 +165,7 @@ export const players = [
   },
   {
     id: "z33cus",
-    name: "✞Z33cus✞ [AHA!] — 17.36",
+    name: "✞Z33cus✞ [AHA!]",
     initials: "Z3",
     twitchChannel: "z33cus",
     instagram: "z33cus_viral",
