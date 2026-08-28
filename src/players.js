@@ -150,4 +150,17 @@ export const players = [
     streamTitle: "",
     viewerCount: 0,
   },
+  {
+    id: "lancelot",
+    name: "Lancelot — 11.58",
+    initials: "L1",
+    twitchChannel: "lancelotssb",
+    instagram: "lancelotssb",
+    tiktok: "lancelotssb",
+    youtube: "lancelotssb",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    isLive: false,
+    streamTitle: "",
+    viewerCount: 0,
+  },
 ];
