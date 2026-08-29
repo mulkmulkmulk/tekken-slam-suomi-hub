@@ -93,7 +93,7 @@ export const players = [
   },
   {
     id: "soca",
-    name: "SoCa [FALX]",
+    name: "SoCa",
     initials: "SC",
     twitchChannel: "socaw",
     instagram: "Arvo_j",
@@ -105,7 +105,7 @@ export const players = [
   },
   {
     id: "iroaoyamada",
-    name: "Iro Aoyamada [NIИ]",
+    name: "Iro Aoyamada",
     initials: "IA",
     twitchChannel: "iroaoyamada",
     youtube: "iroaoyamada",
@@ -117,7 +117,7 @@ export const players = [
   },
   {
     id: "the_katjaana",
-    name: "The_katjaana [ɴᴏʀᴅ]",
+    name: "The_katjaana",
     initials: "TK",
     twitchChannel: "the_katjaanaa",
     tiktok: "the_katjaana",
@@ -142,7 +142,7 @@ export const players = [
   },
   {
     id: "mr_randomizer",
-    name: "Mr Randomizer [JoJo]",
+    name: "Mr Randomizer",
     initials: "MR",
     twitchChannel: "mr_randomizer_",
     coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
@@ -165,7 +165,7 @@ export const players = [
   },
   {
     id: "z33cus",
-    name: "✞Z33cus✞ [AHA!]",
+    name: "✞Z33cus✞",
     initials: "Z3",
     twitchChannel: "z33cus",
     instagram: "z33cus_viral",
