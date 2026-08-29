@@ -1,7 +1,10 @@
 /* Site-wide type system -- unified with the coaches view's own look
    (Oswald for headings, Manrope for body copy, JetBrains Mono for small
-   meta/labels) instead of the old separate Barlow Condensed + Inter pair. */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+   meta/labels) instead of the old separate Barlow Condensed + Inter pair.
+   Font loading itself happens via <link> tags in index.html's <head>
+   (faster than @import -- the browser can discover and fetch the fonts
+   immediately while parsing the HTML, in parallel with this stylesheet,
+   instead of waiting to parse this whole file first). */
 
 :root {
   font-family: Manrope, system-ui, sans-serif;

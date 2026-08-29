@@ -407,6 +407,17 @@ async function serveTwitchLive(res) {
 }
 
 const server = http.createServer(async (req, res) => {
+  // Baseline security headers (OWASP Secure Headers) on every response --
+  // set once here via setHeader so they merge into whatever writeHead()
+  // each route handler calls below instead of needing to repeat them.
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+  // Browsers only honor this over an actual HTTPS connection, so it's safe
+  // to send unconditionally even though this app itself doesn't terminate TLS.
+  res.setHeader("Strict-Transport-Security", "max-age=15552000");
+
   let requestPath;
   try {
     requestPath = decodeURIComponent(new URL(req.url, `http://${req.headers.host}`).pathname);
@@ -428,6 +439,23 @@ const server = http.createServer(async (req, res) => {
 
   if (requestPath.startsWith("/coach-media/")) {
     await proxyCoachMedia(req, res, requestPath);
+    return;
+  }
+
+  if (requestPath === "/robots.txt") {
+    res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("User-agent: *\nAllow: /\n\nSitemap: https://tekkenslam.fi/sitemap.xml\n");
+    return;
+  }
+
+  if (requestPath === "/sitemap.xml") {
+    // Single-page app -- everything lives under one URL, the different
+    // views (Info/Osallistujat/Valmentajat) are client-side state, not
+    // separate server routes, so there's only one real URL to list.
+    res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
+    res.end(
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url>\n    <loc>https://tekkenslam.fi/</loc>\n  </url>\n</urlset>\n`
+    );
     return;
   }
 
