@@ -177,4 +177,16 @@ export const players = [
     streamTitle: "",
     viewerCount: 0,
   },
+  {
+    id: "nanhari",
+    name: "nänhäri",
+    initials: "NÄ",
+    twitchChannel: "ouluarcticgaming",
+    instagram: "ouluarcticgaming",
+    youtube: "ouluarcticgaming",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    isLive: false,
+    streamTitle: "",
+    viewerCount: 0,
+  },
 ];
