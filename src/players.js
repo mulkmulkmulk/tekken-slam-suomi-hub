@@ -26,7 +26,7 @@ export const players = [
     name: "Jönssi",
     initials: "JÖ",
     twitchChannel: "jonssi_",
-    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    coach: "varathar",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -50,7 +50,7 @@ export const players = [
     twitchChannel: "pi4ch",
     instagram: "pi4ch",
     tiktok: "pi4ch",
-    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    coach: "xeroh",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -122,7 +122,7 @@ export const players = [
     twitchChannel: "the_katjaanaa",
     tiktok: "the_katjaana",
     youtube: "thekatjaana",
-    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    coach: "zleepys",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -145,7 +145,7 @@ export const players = [
     name: "Mr Randomizer",
     initials: "MR",
     twitchChannel: "mr_randomizer_",
-    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    coach: "levis",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -184,7 +184,7 @@ export const players = [
     twitchChannel: "ouluarcticgaming",
     instagram: "ouluarcticgaming",
     youtube: "ouluarcticgaming",
-    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    coach: "erkka",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
