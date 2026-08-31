@@ -44,6 +44,7 @@ const TWITCH_LOGINS = [
   "lancelotssb",
   "z33cus",
   "ouluarcticgaming",
+  "theeelio",
 ];
 const TWITCH_CACHE_MS = 30_000;
 let twitchTokenCache = { token: "", expiresAt: 0 };

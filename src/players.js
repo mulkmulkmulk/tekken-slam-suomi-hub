@@ -189,4 +189,14 @@ export const players = [
     streamTitle: "",
     viewerCount: 0,
   },
+  {
+    id: "eel",
+    name: "Eel",
+    initials: "EE",
+    twitchChannel: "theeelio",
+    coach: "", // valmentajan nimi (ks. valmentajat-repo) -- täytetään myöhemmin
+    isLive: false,
+    streamTitle: "",
+    viewerCount: 0,
+  },
 ];
