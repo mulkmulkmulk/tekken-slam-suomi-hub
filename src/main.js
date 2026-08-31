@@ -11,7 +11,80 @@ function scrollToTop() {
 
 let currentView = "info";
 let selectedCoach = null;
+let selectedPlayer = null;
+let routeNotFound = false;
 let twitchState = { status: "loading", updatedAt: null };
+
+// TEKKEN_SLAM_ROUTING_PATCH
+const viewPaths = {
+  info: "/",
+  players: "/pelaajat",
+  coaches: "/valmentajat",
+};
+
+const normalizePathname = (pathname) => {
+  const clean = String(pathname || "/").split("?")[0].split("#")[0];
+  if (clean === "/") return "/";
+  return clean.replace(/\/+$/, "") || "/";
+};
+
+function syncRouteFromLocation() {
+  const pathname = normalizePathname(window.location.pathname);
+  const parts = pathname.split("/").filter(Boolean);
+
+  selectedPlayer = null;
+  selectedCoach = null;
+  routeNotFound = false;
+
+  if (pathname === "/") {
+    currentView = "info";
+    return;
+  }
+
+  if (parts[0] === "pelaajat") {
+    currentView = "players";
+    if (parts.length === 1) return;
+    if (parts.length === 2) {
+      const playerId = decodeURIComponent(parts[1]).toLowerCase();
+      selectedPlayer = players.find((player) => String(player.id).toLowerCase() === playerId) || null;
+      routeNotFound = !selectedPlayer;
+      return;
+    }
+    routeNotFound = true;
+    return;
+  }
+
+  if (parts[0] === "valmentajat") {
+    currentView = "coaches";
+    if (parts.length === 1) return;
+    if (parts.length === 2) {
+      const coachSlug = decodeURIComponent(parts[1]).toLowerCase();
+      selectedCoach = coaches.find((coach) => String(coach.slug).toLowerCase() === coachSlug) || null;
+      routeNotFound = !selectedCoach;
+      return;
+    }
+    routeNotFound = true;
+    return;
+  }
+
+  currentView = "info";
+  routeNotFound = true;
+}
+
+function navigateTo(pathname, { replace = false } = {}) {
+  const target = normalizePathname(pathname);
+  const current = normalizePathname(window.location.pathname);
+
+  if (target !== current) {
+    window.history[replace ? "replaceState" : "pushState"]({}, "", target);
+  }
+
+  syncRouteFromLocation();
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  app.querySelector("#view")?.focus({ preventScroll: true });
+}
+
 
 // Coaches are fetched live from the tekken-slam-suomi-valmentajat repo's
 // generated data/coaches.json (via the /api/coaches proxy in server.mjs)
@@ -54,6 +127,13 @@ async function loadCoaches() {
     const data = await response.json();
     coaches = data.map(mapCoach);
     coachesState = { status: "ready" };
+
+    // A direct visit to /valmentajat/<slug> is resolved before coach data
+    // has finished loading. Re-sync the current URL now that the roster
+    // exists so valid coach profile routes do not remain stuck on 404.
+    if (normalizePathname(window.location.pathname).startsWith("/valmentajat/")) {
+      syncRouteFromLocation();
+    }
   } catch (error) {
     console.warn("Coach data could not be loaded:", error);
     coachesState = { status: coaches.length ? "ready" : "error" };
@@ -125,6 +205,7 @@ const playerCard = (player) => `
       ${coachLine(player)}
       ${player.isLive ? `<div class="player-live-summary"><strong>${escapeHtml(player.game || "Twitch")}</strong><span>${formatViewers(player.viewerCount)} katsojaa</span></div>` : ""}
       <div class="social-list">${socialLinks(player)}</div>
+      <button class="text-link text-link--button" type="button" data-player="${player.id}">Avaa profiili →</button>
     </div>
   </article>
 `;
@@ -261,7 +342,52 @@ function infoView() {
   `;
 }
 
+function playerProfileView(player) {
+  const live = Boolean(player.isLive);
+  return `
+    <section class="page-hero">
+      <button class="back-link" type="button" data-back-players>← Takaisin osallistujiin</button>
+      <p class="kicker">TEKKEN SLAM SUOMI · OSALLISTUJA</p>
+      <h1>${escapeHtml(player.name)}</h1>
+      <p>Seuraa ${escapeHtml(player.name)}n harjoittelua ja matkaa kohti Tekken Slam Suomi -finaalia.</p>
+      <div class="social-list">${socialLinks(player)}</div>
+    </section>
+
+    ${live ? `
+      <section class="section">
+        <div class="section-heading">
+          <div><p class="kicker kicker--live"><span></span> LIVE NYT</p><h2>${escapeHtml(player.name)} on lähetyksessä</h2></div>
+          <p>${formatViewers(player.viewerCount)} katsojaa</p>
+        </div>
+        <div class="live-grid">${liveCard(player)}</div>
+      </section>
+    ` : `
+      <section class="live-notice">
+        <span class="live-notice__dot"></span>
+        <div>
+          <strong>${escapeHtml(player.name)} ei ole juuri nyt livessä</strong>
+          <p>Live-status tarkistetaan automaattisesti. Twitch-kanavan voit avata yllä olevasta linkistä.</p>
+        </div>
+      </section>
+    `}
+
+    <section class="section">
+      <div class="section-heading">
+        <div><p class="kicker">OSALLISTUJAPROFIILI</p><h2>Kanavat</h2></div>
+        <p>Suorat linkit osallistujan Tekken Slam Suomi -harjoittelun seuraamiseen.</p>
+      </div>
+      <div class="details-grid">
+        ${player.twitchChannel ? `<div><span>Twitch</span><strong>${escapeHtml(player.twitchChannel)}</strong><p><a class="inline-link" href="https://twitch.tv/${encodeURIComponent(player.twitchChannel)}" target="_blank" rel="noreferrer">Avaa Twitch →</a></p></div>` : ""}
+        ${player.instagram ? `<div><span>Instagram</span><strong>@${escapeHtml(player.instagram)}</strong><p><a class="inline-link" href="https://instagram.com/${encodeURIComponent(player.instagram)}" target="_blank" rel="noreferrer">Avaa Instagram →</a></p></div>` : ""}
+        ${player.tiktok ? `<div><span>TikTok</span><strong>@${escapeHtml(player.tiktok)}</strong><p><a class="inline-link" href="https://www.tiktok.com/@${encodeURIComponent(player.tiktok)}" target="_blank" rel="noreferrer">Avaa TikTok →</a></p></div>` : ""}
+        ${player.youtube ? `<div><span>YouTube</span><strong>${escapeHtml(player.youtube)}</strong><p><a class="inline-link" href="https://www.youtube.com/@${encodeURIComponent(player.youtube)}" target="_blank" rel="noreferrer">Avaa YouTube →</a></p></div>` : ""}
+      </div>
+    </section>
+  `;
+}
+
 function playersView() {
+  if (selectedPlayer) return playerProfileView(selectedPlayer);
   const live = livePlayers();
   return `
     <section class="coach-hero">
@@ -534,51 +660,52 @@ async function refreshTwitchStatus({ rerender = true } = {}) {
   if (rerender && (currentView === "players" || currentView === "info")) render();
 }
 
+function notFoundView() {
+  return `
+    <section class="page-hero">
+      <p class="kicker">404</p>
+      <h1>Sivua ei löytynyt</h1>
+      <p>Pyydettyä osallistujaa tai valmentajaa ei löytynyt.</p>
+      <button class="button button--primary" type="button" data-go="info">Takaisin etusivulle</button>
+    </section>
+  `;
+}
+
 function render() {
   const views = { info: infoView, players: playersView, coaches: coachesView };
-  app.innerHTML = shell(views[currentView]());
+  const view = routeNotFound ? notFoundView : views[currentView];
+  app.innerHTML = shell(view());
 
   app.querySelectorAll("[data-go]").forEach((button) => {
     button.addEventListener("click", () => {
       const next = button.dataset.go;
       if (!views[next]) return;
-      // Clicking "Valmentajat" while already viewing one coach's profile
-      // must still work -- it should drop back to the roster, not no-op
-      // just because currentView is already "coaches".
-      if (next === currentView && !selectedCoach) return;
-      currentView = next;
-      selectedCoach = null;
-      render();
-      scrollToTop();
-      app.querySelector("#view")?.focus({ preventScroll: true });
+      navigateTo(viewPaths[next]);
+    });
+  });
+
+  app.querySelectorAll("[data-player]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const player = players.find((item) => item.id === button.dataset.player);
+      if (!player) return;
+      navigateTo(`/pelaajat/${encodeURIComponent(player.id)}`);
     });
   });
 
   app.querySelectorAll("[data-coach]").forEach((button) => {
     button.addEventListener("click", () => {
-      selectedCoach = coaches.find((coach) => coach.slug === button.dataset.coach) || null;
-      render();
-      scrollToTop();
-    });
-  });
-
-  app.querySelectorAll("[data-view-coach]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const coach = coaches.find((c) => c.slug === button.dataset.viewCoach);
+      const coach = coaches.find((item) => item.slug === button.dataset.coach);
       if (!coach) return;
-      currentView = "coaches";
-      selectedCoach = coach;
-      render();
-      scrollToTop();
+      navigateTo(`/valmentajat/${encodeURIComponent(coach.slug)}`);
     });
   });
 
-  app.querySelectorAll("[data-back-coaches]").forEach((button) => {
-    button.addEventListener("click", () => {
-      selectedCoach = null;
-      render();
-      scrollToTop();
-    });
+  app.querySelector("[data-back-players]")?.addEventListener("click", () => {
+    navigateTo("/pelaajat");
+  });
+
+  app.querySelector("[data-back-coaches]")?.addEventListener("click", () => {
+    navigateTo("/valmentajat");
   });
 
   const coachVideo = app.querySelector("[data-coach-video]");
@@ -600,6 +727,13 @@ function render() {
     mobileNav.hidden = expanded;
   });
 }
+
+syncRouteFromLocation();
+window.addEventListener("popstate", () => {
+  syncRouteFromLocation();
+  render();
+  window.scrollTo({ top: 0 });
+});
 
 render();
 refreshTwitchStatus();
