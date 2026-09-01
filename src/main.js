@@ -699,6 +699,14 @@ function render() {
     });
   });
 
+  app.querySelectorAll("[data-view-coach]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const coach = coaches.find((item) => item.slug === button.dataset.viewCoach);
+      if (!coach) return;
+      navigateTo(`/valmentajat/${encodeURIComponent(coach.slug)}`);
+    });
+  });
+
   app.querySelectorAll("[data-coach]").forEach((link) => {
     link.addEventListener("click", (event) => {
       // Real <a href> now -- only take over plain left-clicks for the fast
