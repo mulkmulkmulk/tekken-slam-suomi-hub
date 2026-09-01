@@ -471,6 +471,11 @@ function coachTileArt(coach) {
   return `<img class="coach-tile-img" src="${coach.poster}" alt="" loading="lazy">`;
 }
 
+// Coaches already paired with a participant (see players.js `coach` field) --
+// shown as a "Valittu" badge on the roster tile so visitors can see at a
+// glance which coaches are still available.
+const takenCoachSlugs = () => new Set(players.map((p) => p.coach).filter(Boolean));
+
 function coachCard(coach, index) {
   const usesSplit = Boolean(coach.mainCharacter && coach.helpsAll);
   const mainLabel = coach.mainCharacter
@@ -478,18 +483,20 @@ function coachCard(coach, index) {
     : coach.allCharacters
       ? "Kaikki hahmot"
       : null;
+  const taken = takenCoachSlugs().has(coach.slug);
 
   return `
-    <button type="button" class="coach-tile${coach.mainCharacter ? " coach-tile--character" : ""}${coach.allCharacters ? " coach-tile--mosaic" : ""}${usesSplit ? " coach-tile--split" : ""}" data-coach="${coach.slug}" aria-label="Avaa valmentajan ${coach.name} profiili" style="--i:${index}">
+    <a class="coach-tile${coach.mainCharacter ? " coach-tile--character" : ""}${coach.allCharacters ? " coach-tile--mosaic" : ""}${usesSplit ? " coach-tile--split" : ""}" href="/valmentajat/${encodeURIComponent(coach.slug)}" data-coach="${coach.slug}" aria-label="Avaa valmentajan ${coach.name} profiili" style="--i:${index}">
       ${coachTileArt(coach)}
       <span class="coach-tile-scrim"></span>
       <span class="coach-tile-num">P${String(index + 1).padStart(2, "0")}</span>
       ${usesSplit ? "" : coachTileAlts(coach)}
       <span class="coach-tile-info">
+        ${taken ? `<span class="coach-tile-taken">Valittu</span>` : ""}
         <span class="coach-tile-name">${coach.name}</span>
         ${mainLabel ? `<span class="coach-tile-tag coach-tile-tag-char">${mainLabel}</span>` : coach.tag ? `<span class="coach-tile-tag">${coach.tag}</span>` : ""}
       </span>
-    </button>`;
+    </a>`;
 }
 
 function coachStat(label, value, emphasis = false) {
@@ -692,10 +699,15 @@ function render() {
     });
   });
 
-  app.querySelectorAll("[data-coach]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const coach = coaches.find((item) => item.slug === button.dataset.coach);
+  app.querySelectorAll("[data-coach]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      // Real <a href> now -- only take over plain left-clicks for the fast
+      // client-side route change. Ctrl/Cmd/Shift/middle-click etc. fall
+      // through to the browser's own "open in new tab" handling.
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const coach = coaches.find((item) => item.slug === link.dataset.coach);
       if (!coach) return;
+      event.preventDefault();
       navigateTo(`/valmentajat/${encodeURIComponent(coach.slug)}`);
     });
   });

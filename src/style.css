@@ -497,6 +497,20 @@ nav button:hover, nav button.active { color: white; }
   color: var(--coach-text-dim);
 }
 .coach-tile-tag-char { color: var(--coach-gold); }
+.coach-tile-taken {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--coach-text);
+  background: rgba(8, 9, 12, 0.6);
+  border: 1px solid var(--coach-gold-dim);
+  padding: 3px 7px;
+  border-radius: 2px;
+}
 
 .coach-tile--character {
   background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(232, 50, 63, 0.16), transparent 70%), var(--coach-bg-elev);
