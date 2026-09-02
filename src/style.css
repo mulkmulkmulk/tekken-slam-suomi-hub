@@ -1016,6 +1016,95 @@ nav button:hover, nav button.active { color: white; }
 }
 
 
+
+/* TEKKEN_SLAM_STRUCTURED_PLAYER_INTRO_V2 */
+.player-introduction {
+  margin-top: 1.5rem;
+}
+
+.player-intro {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.player-intro__section {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+  box-shadow: 0 16px 38px rgba(0,0,0,.16);
+}
+
+.player-intro__section::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: currentColor;
+  opacity: .72;
+}
+
+.player-intro__kicker {
+  margin-bottom: .4rem;
+  opacity: .68;
+}
+
+.player-intro__heading {
+  margin: 0 0 .8rem;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.15;
+  letter-spacing: .025em;
+}
+
+.player-intro__body {
+  font-size: clamp(.98rem, 1.7vw, 1.08rem);
+  line-height: 1.72;
+}
+
+.player-intro__body a {
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .18em;
+}
+
+.player-intro__body a:hover {
+  text-decoration-thickness: 2px;
+}
+
+@media (max-width: 760px) {
+  .player-intro {
+    grid-template-columns: 1fr;
+  }
+
+  .player-intro__section {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+}
+/* Fix profile heading character overlap */
+.page-hero h1,
+.player-intro__heading {
+  line-height: 1.3;
+  padding-top: 0.08em;
+  padding-bottom: 0.12em;
+  overflow: visible;
+}
+.page-hero h1 {
+  line-height: 1.25;
+  padding-block: 0.12em;
+}
+
+.player-intro__heading {
+  line-height: 1.35;
+}
+
+
+
 /* TEKKEN_SLAM_BACK_LINK_V2 */
 .back-link {
   display: inline-flex;
@@ -1055,4 +1144,4 @@ nav button:hover, nav button.active { color: white; }
     padding: 9px 13px;
     font-size: 10px;
   }
-}
+

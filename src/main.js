@@ -238,6 +238,13 @@ const sortedPlayers = () => [...players].sort((a, b) => Number(b.isLive) - Numbe
 function infoView() {
   const liveCount = livePlayers().length;
   return `
+    <section class="event event--compact">
+      <p class="kicker kicker--live"><span></span> HARJOITUSKAUSI</p>
+      <h2>${liveCount ? `${liveCount} osallistujaa on juuri nyt livessä` : "Seuraa harjoittelua suorana"}</h2>
+      <p>${liveCount ? "Katso käynnissä olevat harjoitusstriimit ja seuraa kehitystä kohti finaalia." : "Käy katsomassa osallistujien profiilit ja Twitch-kanavat."}</p>
+      <button class="button button--primary" type="button" data-go="players">Osallistujat</button>
+    </section>
+
     <section class="hero hero--info">
       <div class="hero__copy">
         <p class="kicker">TEKKEN SLAM SUOMI</p>
@@ -333,11 +340,72 @@ function infoView() {
       <div class="venue-actions"><a class="button button--secondary" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Roomin sivut →</a><a class="button button--secondary" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Smash Room Vaasa kartalla →</a></div>
     </section>
 
-    <section class="event event--compact">
-      <p class="kicker kicker--live"><span></span> HARJOITUSKAUSI</p>
-      <h2>${liveCount ? `${liveCount} osallistujaa on juuri nyt livessä` : "Seuraa harjoittelua suorana"}</h2>
-      <p>${liveCount ? "Katso käynnissä olevat harjoitusstriimit ja seuraa kehitystä kohti finaalia." : "Käy katsomassa osallistujien profiilit ja Twitch-kanavat."}</p>
-      <button class="button button--primary" type="button" data-go="players">Osallistujat</button>
+  `;
+}
+
+
+// TEKKEN_SLAM_STRUCTURED_PLAYER_INTRO_V2
+function escapePlayerProfileText(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function renderPlayerProfileText(value = "") {
+  let html = escapePlayerProfileText(value);
+
+  html = html.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+
+  return html.replace(/\n/g, "<br>");
+}
+
+function renderPlayerIntroSection(title, value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+
+  return `
+    <article class="player-intro__section">
+      <p class="kicker player-intro__kicker">ESITTELY</p>
+      <h2 class="player-intro__heading">${escapePlayerProfileText(title)}</h2>
+      <div class="player-intro__body">${renderPlayerProfileText(text)}</div>
+    </article>
+  `;
+}
+
+function renderStructuredPlayerIntroduction(player) {
+  const sections = [
+    renderPlayerIntroSection("Kuka olet?", player.whoAreYou),
+    renderPlayerIntroSection("Kerro itsestäsi", player.aboutYou),
+    renderPlayerIntroSection(
+      "Lempibiisi josta tulee hyvä fiilis",
+      player.feelGoodSong
+    ),
+    renderPlayerIntroSection(
+      "Mitä mietteitä turnaukseen / fiiliksiä?",
+      player.tournamentThoughts
+    ),
+  ].filter(Boolean);
+
+  if (!sections.length) return "";
+
+  return `
+    <section class="section player-introduction">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">OSALLISTUJAPROFIILI</p>
+          <h2>Tutustu ${escapePlayerProfileText(player.name)}</h2>
+        </div>
+        <p>Pelaajan omin sanoin.</p>
+      </div>
+      <div class="player-intro">
+        ${sections.join("")}
+      </div>
     </section>
   `;
 }
@@ -370,6 +438,8 @@ function playerProfileView(player) {
         </div>
       </section>
     `}
+
+    ${renderStructuredPlayerIntroduction(player)}
 
     <section class="section">
       <div class="section-heading">
