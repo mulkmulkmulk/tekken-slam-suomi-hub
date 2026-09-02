@@ -497,21 +497,6 @@ nav button:hover, nav button.active { color: white; }
   color: var(--coach-text-dim);
 }
 .coach-tile-tag-char { color: var(--coach-gold); }
-.coach-tile-taken {
-  display: inline-block;
-  margin-bottom: 6px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #17130a;
-  background: linear-gradient(180deg, #f6cf74, var(--coach-gold));
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 4px 8px;
-  border-radius: 2px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-}
 
 .coach-tile--character {
   background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(232, 50, 63, 0.16), transparent 70%), var(--coach-bg-elev);
@@ -1028,4 +1013,46 @@ nav button:hover, nav button.active { color: white; }
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.25rem;
+}
+
+
+/* TEKKEN_SLAM_BACK_LINK_V2 */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  min-height: 0;
+  margin: 0 0 32px;
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #b9b9c2;
+  cursor: pointer;
+  font: 800 11px/1 Barlow, sans-serif;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+}
+
+.back-link:hover {
+  border-color: rgba(242, 38, 54, 0.58);
+  background: rgba(242, 38, 54, 0.075);
+  color: #fff;
+  transform: translateX(-2px);
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .back-link {
+    margin-bottom: 24px;
+    padding: 9px 13px;
+    font-size: 10px;
+  }
 }
