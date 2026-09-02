@@ -466,14 +466,20 @@ const server = http.createServer(async (req, res) => {
   // else, including .env (real Twitch API secrets), server.mjs, package.json.
   let filePath;
   let allowedRoot;
-  if (
+  // TEKKEN_SLAM_SPA_ROUTING
+  // Only these client-side routes may fall back to index.html.
+  // This is intentionally NOT a catch-all, so .env, server.mjs and
+  // package.json remain inaccessible over HTTP.
+  const isSpaRoute =
     requestPath === "/" ||
-    requestPath === "/pelaajat" || requestPath.startsWith("/pelaajat/") ||
-    requestPath === "/valmentajat" || requestPath.startsWith("/valmentajat/")
-  ) {
-    // SPA client-side routes (see TEKKEN_SLAM_ROUTING_PATCH in src/main.js) --
-    // always serve index.html so a direct visit or page refresh on one of
-    // these URLs doesn't 404 before main.js's own router takes over.
+    requestPath === "/pelaajat" ||
+    requestPath === "/pelaajat/" ||
+    /^\/pelaajat\/[a-z0-9_-]+\/?$/i.test(requestPath) ||
+    requestPath === "/valmentajat" ||
+    requestPath === "/valmentajat/" ||
+    /^\/valmentajat\/[a-z0-9_-]+\/?$/i.test(requestPath);
+
+  if (isSpaRoute) {
     filePath = path.join(__dirname, "index.html");
     allowedRoot = __dirname;
   } else if (requestPath.startsWith("/src/")) {
