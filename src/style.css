@@ -1144,4 +1144,64 @@ nav button:hover, nav button.active { color: white; }
     padding: 9px 13px;
     font-size: 10px;
   }
+}
+
+/* Tekken Slam Suomi TikTok CTA in the front-page live card */
+.event.event--compact {
+  position: relative;
+  padding-bottom: 72px;
+}
+
+.event__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tiktok-follow {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.tiktok-follow:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.tiktok-follow__label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.tiktok-follow strong {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  .event.event--compact {
+    padding-bottom: 76px;
+  }
+
+  .tiktok-follow {
+    right: 16px;
+    bottom: 16px;
+  }
+}
 

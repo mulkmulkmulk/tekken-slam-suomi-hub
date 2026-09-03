@@ -242,7 +242,19 @@ function infoView() {
       <p class="kicker kicker--live"><span></span> HARJOITUSKAUSI</p>
       <h2>${liveCount ? `${liveCount} osallistujaa on juuri nyt livessä` : "Seuraa harjoittelua suorana"}</h2>
       <p>${liveCount ? "Katso käynnissä olevat harjoitusstriimit ja seuraa kehitystä kohti finaalia." : "Käy katsomassa osallistujien profiilit ja Twitch-kanavat."}</p>
-      <button class="button button--primary" type="button" data-go="players">Osallistujat</button>
+      <div class="event__actions">
+        <button class="button button--primary" type="button" data-go="players">Osallistujat</button>
+        <a
+          class="tiktok-follow"
+          href="https://www.tiktok.com/@tekken.slam.suomi?_r=1&_t=ZN-99QlC26hTt8"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Seuraa Tekken Slam Suomea TikTokissa"
+        >
+          <span class="tiktok-follow__label">Seuraa meitä</span>
+          <strong>TikTokissa ↗</strong>
+        </a>
+      </div>
     </section>
 
     <section class="hero hero--info">
@@ -828,4 +840,3 @@ window.addEventListener("popstate", () => {
 render();
 refreshTwitchStatus();
 setInterval(() => refreshTwitchStatus(), 60_000);
-loadCoaches();
