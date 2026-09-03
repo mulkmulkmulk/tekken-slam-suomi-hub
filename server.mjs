@@ -50,6 +50,28 @@ const TWITCH_CACHE_MS = 30_000;
 let twitchTokenCache = { token: "", expiresAt: 0 };
 let twitchLiveCache = { payload: null, expiresAt: 0 };
 
+const TWITCH_CLIPS_CACHE_MS = 5 * 60 * 1000;
+const TWITCH_CLIPS_STARTED_AT = process.env.TWITCH_CLIPS_STARTED_AT || "2026-09-01T00:00:00Z";
+const TWITCH_CLIP_PLAYER_IDS = {
+  eryoces: "eryoces",
+  jonssi_: "jonssi",
+  suikkari96: "suikkari96",
+  pi4ch: "pi4ch",
+  anmiina: "anmiina",
+  huntari_: "huntari",
+  r1sbe: "r1sbe",
+  socaw: "soca",
+  iroaoyamada: "iroaoyamada",
+  the_katjaanaa: "the_katjaana",
+  sitragaming: "sitra",
+  mr_randomizer_: "mr_randomizer",
+  lancelotssb: "lancelot",
+  z33cus: "z33cus",
+  ouluarcticgaming: "nanhari",
+  theeelio: "eel",
+};
+let twitchClipsCache = { payload: null, expiresAt: 0 };
+
 const COACH_MEDIA_ORIGIN = "https://raw.githubusercontent.com/mulkmulkmulk/tekken-slam-suomi-valmentajat/main/docs/media";
 const COACH_DATA_URL = "https://raw.githubusercontent.com/mulkmulkmulk/tekken-slam-suomi-valmentajat/main/data/coaches.json";
 // The roster changes at most a few times a day right now, so a short cache
@@ -378,6 +400,183 @@ async function getTwitchLivePayload() {
   return payload;
 }
 
+
+async function twitchHelixFetch(url) {
+  let token = await getTwitchAppToken();
+  let response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Client-Id": TWITCH_CLIENT_ID,
+    },
+  });
+
+  if (response.status === 401) {
+    twitchTokenCache = { token: "", expiresAt: 0 };
+    token = await getTwitchAppToken(true);
+    response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Client-Id": TWITCH_CLIENT_ID,
+      },
+    });
+  }
+
+  return response;
+}
+
+async function getTwitchUsersByLogin() {
+  const url = new URL("https://api.twitch.tv/helix/users");
+  for (const login of TWITCH_LOGINS) url.searchParams.append("login", login);
+
+  const response = await twitchHelixFetch(url);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`Twitch Get Users failed (${response.status}): ${detail}`);
+  }
+
+  const data = await response.json();
+  return Object.fromEntries(
+    (data.data || []).map((user) => [
+      String(user.login || "").toLowerCase(),
+      {
+        id: user.id,
+        login: String(user.login || "").toLowerCase(),
+        displayName: user.display_name || user.login,
+      },
+    ])
+  );
+}
+
+async function getTekken8GameId() {
+  const url = new URL("https://api.twitch.tv/helix/games");
+  url.searchParams.set("name", "TEKKEN 8");
+
+  const response = await twitchHelixFetch(url);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`Twitch Get Games failed (${response.status}): ${detail}`);
+  }
+
+  const data = await response.json();
+  const game = (data.data || [])[0];
+  if (!game?.id) throw new Error("TEKKEN 8 Twitch category was not found");
+  return game.id;
+}
+
+async function fetchBroadcasterClips(user, tekken8GameId) {
+  const url = new URL("https://api.twitch.tv/helix/clips");
+  url.searchParams.set("broadcaster_id", user.id);
+  url.searchParams.set("first", "100");
+  url.searchParams.set("started_at", TWITCH_CLIPS_STARTED_AT);
+  url.searchParams.set("ended_at", new Date().toISOString());
+
+  const response = await twitchHelixFetch(url);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`Twitch Get Clips failed for ${user.login} (${response.status}): ${detail}`);
+  }
+
+  const data = await response.json();
+  return (data.data || [])
+    .filter((clip) => String(clip.game_id || "") === String(tekken8GameId))
+    .map((clip) => ({
+      id: clip.id,
+      playerId: TWITCH_CLIP_PLAYER_IDS[user.login] || user.login,
+      broadcasterLogin: user.login,
+      broadcasterName: user.displayName,
+      title: clip.title || "",
+      createdAt: clip.created_at || null,
+      thumbnailUrl: clip.thumbnail_url || "",
+      viewCount: Number(clip.view_count || 0),
+      duration: Number(clip.duration || 0),
+      url: clip.url || "",
+      gameId: clip.game_id || "",
+    }));
+}
+
+async function getTwitchClipsPayload() {
+  const now = Date.now();
+  if (twitchClipsCache.payload && twitchClipsCache.expiresAt > now) {
+    return twitchClipsCache.payload;
+  }
+
+  const [users, tekken8GameId] = await Promise.all([
+    getTwitchUsersByLogin(),
+    getTekken8GameId(),
+  ]);
+
+  // One clips request per participant. A failed individual channel should not
+  // hide everybody else's clips.
+  const results = await Promise.allSettled(
+    Object.values(users).map((user) => fetchBroadcasterClips(user, tekken8GameId))
+  );
+
+  const clips = [];
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      clips.push(...result.value);
+    } else {
+      console.error("Twitch participant clips fetch failed:", result.reason);
+    }
+  }
+
+  clips.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+  const payload = {
+    updatedAt: new Date().toISOString(),
+    startedAt: TWITCH_CLIPS_STARTED_AT,
+    game: { id: tekken8GameId, name: "TEKKEN 8" },
+    clips,
+  };
+
+  twitchClipsCache = {
+    payload,
+    expiresAt: now + TWITCH_CLIPS_CACHE_MS,
+  };
+  return payload;
+}
+
+async function serveTwitchClips(res) {
+  if (!TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET) {
+    res.writeHead(503, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    });
+    res.end(JSON.stringify({
+      error: "Twitch integration is not configured on the server",
+      configured: false,
+    }));
+    return;
+  }
+
+  try {
+    const payload = await getTwitchClipsPayload();
+    res.writeHead(200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    });
+    res.end(JSON.stringify({ ...payload, configured: true }));
+  } catch (error) {
+    console.error("Twitch clips API failed:", error);
+
+    if (twitchClipsCache.payload) {
+      res.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+      });
+      res.end(JSON.stringify({ ...twitchClipsCache.payload, configured: true, stale: true }));
+      return;
+    }
+
+    res.writeHead(502, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    });
+    res.end(JSON.stringify({ error: "Twitch clips could not be loaded", configured: true }));
+  }
+}
+
+
 async function serveTwitchLive(res) {
   if (!TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET) {
     res.writeHead(503, {
@@ -409,17 +608,6 @@ async function serveTwitchLive(res) {
 }
 
 const server = http.createServer(async (req, res) => {
-  // Baseline security headers (OWASP Secure Headers) on every response --
-  // set once here via setHeader so they merge into whatever writeHead()
-  // each route handler calls below instead of needing to repeat them.
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "DENY");
-  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
-  // Browsers only honor this over an actual HTTPS connection, so it's safe
-  // to send unconditionally even though this app itself doesn't terminate TLS.
-  res.setHeader("Strict-Transport-Security", "max-age=15552000");
-
   let requestPath;
   try {
     requestPath = decodeURIComponent(new URL(req.url, `http://${req.headers.host}`).pathname);
@@ -434,6 +622,11 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (requestPath === "/api/twitch/clips") {
+    await serveTwitchClips(res);
+    return;
+  }
+
   if (requestPath === "/api/coaches") {
     await serveCoaches(res);
     return;
@@ -444,48 +637,21 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (requestPath === "/robots.txt") {
-    res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
-    res.end("User-agent: *\nAllow: /\n\nSitemap: https://tekkenslam.fi/sitemap.xml\n");
-    return;
-  }
-
-  if (requestPath === "/sitemap.xml") {
-    // Single-page app -- everything lives under one URL, the different
-    // views (Info/Osallistujat/Valmentajat) are client-side state, not
-    // separate server routes, so there's only one real URL to list.
-    res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
-    res.end(
-      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url>\n    <loc>https://tekkenslam.fi/</loc>\n  </url>\n</urlset>\n`
-    );
-    return;
-  }
-
-  // Only these three roots are servable directly. This used to fall through
+  // Only explicitly allowed roots are servable directly. This used to fall through
   // to a catch-all that served ANY file under the project root for anything
   // else, including .env (real Twitch API secrets), server.mjs, package.json.
   let filePath;
   let allowedRoot;
-  // TEKKEN_SLAM_SPA_ROUTING
-  // Only these client-side routes may fall back to index.html.
-  // This is intentionally NOT a catch-all, so .env, server.mjs and
-  // package.json remain inaccessible over HTTP.
-  const isSpaRoute =
-    requestPath === "/" ||
-    requestPath === "/pelaajat" ||
-    requestPath === "/pelaajat/" ||
-    /^\/pelaajat\/[a-z0-9_-]+\/?$/i.test(requestPath) ||
-    requestPath === "/valmentajat" ||
-    requestPath === "/valmentajat/" ||
-    /^\/valmentajat\/[a-z0-9_-]+\/?$/i.test(requestPath);
-
-  if (isSpaRoute) {
+  if (requestPath === "/" || requestPath === "/klipit") {
     filePath = path.join(__dirname, "index.html");
     allowedRoot = __dirname;
   } else if (requestPath.startsWith("/src/")) {
     filePath = path.join(__dirname, requestPath);
     allowedRoot = __dirname;
-  } else if (requestPath.startsWith("/video/") || requestPath.startsWith("/images/") || requestPath.startsWith("/players/")) {
+  } else if (requestPath === "/widget" || requestPath === "/widget/") {
+    filePath = path.join(PUBLIC_DIR, "widget", "index.html");
+    allowedRoot = PUBLIC_DIR;
+  } else if (requestPath.startsWith("/video/") || requestPath.startsWith("/images/") || requestPath.startsWith("/players/") || requestPath.startsWith("/widget/")) {
     filePath = path.join(PUBLIC_DIR, requestPath);
     allowedRoot = PUBLIC_DIR;
   } else {
@@ -506,4 +672,5 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Tekken Slam Suomi: http://127.0.0.1:${PORT}`);
   console.log(`Twitch integration: ${TWITCH_CLIENT_ID && TWITCH_CLIENT_SECRET ? "configured" : "not configured"}`);
+  console.log(`OBS widget: http://127.0.0.1:${PORT}/widget/`);
 });
