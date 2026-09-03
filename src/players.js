@@ -144,6 +144,15 @@ On kivaa päästä tapaamaan kanssastriimaajia livenä ja pitämään hauskaa. V
     youtube: "huntari",
     tiktok: "huntarifin",
     coach: "big-boss",
+
+    whoAreYou: `Meikäläinen on Huntari, suomen twitch jeesus, Asmongold, Jason Momoa mitä näitä nyt on mitä chatti on lempinimiä antanut! 35-vuotias Turkulainen (Kaarinalainen ikuisesti, koska kotikaupunki mutta asun Turus 😄)`,
+
+    aboutYou: `Suorapuheinen tarinasetä joka tykkään haasteista kuin haasteista. Varsinkin peleissä mitä vaikeampaa sen parempi. Entisenä kilpaurheilijana meriittejä löytyy niin jalkapallosta, koripallosta kuin kilpacheerleadingistä. Alotin 2021 livettämisen loukkaantumisen takia maajoukkueleirillä. Pääsääntöisesti livetän Twitchiin, mutta suattapi olla/suattapi olla olemati jotain muutakin on tulossa!`,
+
+    feelGoodSong: `Hollywood Undead - Whatever it takes. Kuvastaa hyvin sitä, että kaikkeni teen oli kyse sitten itsestäni tai lähimmäisistäni. Tässä turnauksessa nimenomaa tämä henkilö on johon sitä heijastan valmentajani **@Big_Boss/Onikage** !`,
+
+    tournamentThoughts: `Erittäin innostuneena ja tykkään hypätä tapahtumiin mitä järjestetään, pyydetään mukaan sekä pääsee verkostoitumaan uusiin vaikuttajiin ja ihmisiin! Kiitos Mulk siitä scouttauksesta Assyilla! Kiitollinen mahdollisuudesta ja tietenkin entisenä kilpaurheilijana. First we give some siima and then we pull a matto alta! 😉`,
+
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -239,7 +248,16 @@ Nähdään areenalla ❤️`,
     youtube: "Sitra",
     tiktok: "sitragamingyt",
     instagram: "officialsitra_",
-    coach: "",
+    coach: "nixxoks",
+
+    whoAreYou: `Sitra nimellä tunnetaan somen puolella. YouTube on se mistä alotettiin ja siellä nähdään enimmäkseen nykyisin minecraftin kauhumodi videoita, mutta saattaa sinne eksyä millon mitäkin 🙂`,
+
+    aboutYou: `YouTubea tullut tehtä noin 5 vuotta ja siihen mukaan tullu pikkuhiljaa TikTok. YouTuben puolella tulee pelailtua, mutta TikTokissa tulee tehtyä ruokasisältöä. Oikeastaan aika normi perheen faija Helsingistä, joka tykkää pelata, striimata ja touhuilla kaikkee erilaista somessa.`,
+
+    feelGoodSong: `Eppu normaalit ku laittaa tulille ni onha siinä fiilistä. Mut oikeestaan mikä vaan menee 😁`,
+
+    tournamentThoughts: `Turha tätä sen kummemmin jännittää tms, kunhan pidetää hauskaa 🙂 Jos voitto tulis niin olishan se hienoa mutta katotaan nyt mihin asti mennää.`,
+
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
@@ -331,9 +349,25 @@ Fiilikset aika hyvät tapahtumasta. Kiva konsepti ja pääsee haastamaan itseä�
     initials: "EE",
     twitchChannel: "theeelio",
     coach: "heddy",
+
+    whoAreYou: `Eel, tällä hetkellä elelen sen valtameren pohjassa, siinä Rixun kohdalla.`,
+
+    aboutYou: `Videopelit ovat lähellä sydäntä, ja joskus olen niitä työkseniikin päässyt tekemään. Kaikki pelaaminen menee, vaikka kaikissa niissä en hyvä väitä olevanikaan, mutta hyvän mielen kilpailullisuutta ehdottomasti löytyy, pikku banter ja huumori mukana, totta kai. Vaikka hirvee nörtti, niin bilehenkinen oon myös, kun jaksaa.`,
+
+    feelGoodSong: `Hyvä musiikki luo fiilistä. Itsellä ei ole niinkään merkitystä, millainen se fiilis sitten on, kunhan musa on hyvä. Varsinaisia lempibiisejä ei ole, mutta pääsääntöisesti musiikki shuffle usein kaikenlaisen rockin, metallin ja niiden alalajien piirissä. Toki Spotify-tili pitää sisällään kaikkea muutakin jännää.
+
+Jos tälleen turnaus mielessä pitää ns. hype-päällä olla, niin ainakin seuraavat ajavat asiaa:
+
+No Cure - Elwood Stray
+The Narrator - Elwood Stray
+The Free Life - Turbowolf
+Overconfidence - Tallah
+Hatef--k - The Bravery`,
+
+    tournamentThoughts: `Hyvin mielin uusia kokemuksia kohti. Taso voi nopeasti tässä joukossa muuttua kovaksi ja se on hyvällä tavalla jännää!`,
+
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
   },
 ];
-
