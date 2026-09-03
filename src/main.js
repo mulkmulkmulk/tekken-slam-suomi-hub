@@ -840,3 +840,4 @@ window.addEventListener("popstate", () => {
 render();
 refreshTwitchStatus();
 setInterval(() => refreshTwitchStatus(), 60_000);
+loadCoaches();
