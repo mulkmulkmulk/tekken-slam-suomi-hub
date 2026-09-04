@@ -344,8 +344,8 @@ function infoView() {
         <div><span>Päivä</span><strong>20.11.2026</strong><p>Tekken Slam Suomi -live-finaali.</p></div>
         <div class="details-cell--venue"><div><span>Venue</span><strong><a class="inline-link inline-link--strong" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Room Vaasa ↗</a></strong><p><a class="inline-link" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Avaa Google Maps →</a></p></div><img class="details-venue-badge" src="/images/smash-room-logo.png" alt="Smash Room"></div>
         <div><span>Yleisö</span><strong>Vapaa pääsy</strong><p>Vierailijat voivat tulla seuraamaan toimintaa maksutta.</p></div>
-        <div><span>Striimi</span><strong>Vaasa Pub Fighters</strong><p><a class="inline-link" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">twitch.tv/vaasapubfighters →</a></p></div>
         <div><span>Järjestäjät</span><strong>VPF × TOW</strong><p>Vaasa Pub Fighters ja TekkenOnlineWeeklyt.</p></div>
+        <div class="details-cell--venue"><div><span>Striimi</span><strong><a class="inline-link inline-link--strong" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">Vaasa Pub Fighters ↗</a></strong><p><a class="inline-link" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">twitch.tv/vaasapubfighters →</a></p></div><img class="details-venue-badge" src="/images/vaasa-pub-fighters-logo.png" alt="Vaasa Pub Fighters"></div>
         <div><span>Discord</span><strong><a class="inline-link inline-link--strong" href="https://discord.gg/WAT85TTCrF" target="_blank" rel="noreferrer">TekkenOnlineWeeklyt ↗</a></strong><p>Täällä tapahtumaa järjestetään ja siitä keskustellaan.</p></div>
       </div>
     </section>
