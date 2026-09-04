@@ -333,6 +333,12 @@ nav button:hover, nav button.active { color: white; }
 .feature-card h3 { margin:7px 0 14px; font-size:32px; }
 .feature-card > p:last-child { color:#92929e; line-height:1.7; font-size:13px; }
 .venue-section > .button { margin-top:22px; }
+.venue-heading-lockup { display: flex; align-items: center; gap: 18px; }
+.venue-logo { height: 58px; width: auto; flex: none; }
+@media (max-width: 640px) {
+  .venue-heading-lockup { gap: 12px; }
+  .venue-logo { height: 40px; }
+}
 
 @media (max-width:1050px) {
   .feature-grid { grid-template-columns:1fr; }

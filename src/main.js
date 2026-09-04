@@ -352,7 +352,13 @@ function infoView() {
 
     <section class="section venue-section">
       <div class="section-heading">
-        <div><p class="kicker"><a class="inline-link" href="https://smashroom.fi/" target="_blank" rel="noreferrer">SMASH ROOM VAASA ↗</a></p><h2>Venue & saapuminen</h2></div>
+        <div class="venue-heading-lockup">
+          <img class="venue-logo" src="/images/smash-room-logo.png" alt="Smash Room">
+          <div>
+            <p class="kicker"><a class="inline-link" href="https://smashroom.fi/" target="_blank" rel="noreferrer">SMASH ROOM VAASA ↗</a></p>
+            <h2>Venue & saapuminen</h2>
+          </div>
+        </div>
         <p>Tapahtumapaikka on esteetön ja siellä on mahdollista myös yöpyä omilla varusteilla pientä nimellistä maksua vastaan.</p>
       </div>
       <div class="feature-grid">
