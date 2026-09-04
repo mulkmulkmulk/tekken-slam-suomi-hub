@@ -302,9 +302,12 @@ nav button:hover, nav button.active { color: white; }
   color: #a0a0aa;
   line-height: 1.7;
 }
-.details-grid--event { grid-template-columns: repeat(3, minmax(0,1fr)); }
-.details-cell--venue { position: relative; }
-.details-venue-badge { position: absolute; top: 4px; right: 4px; height: 56px; width: auto; }
+.details-grid--event { grid-template-columns: repeat(3, minmax(0,1fr)); max-width: 1240px; margin: 0 auto; }
+.details-cell--venue { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.details-venue-badge { height: 74px; width: auto; flex: none; }
+@media (max-width: 620px) {
+  .details-venue-badge { height: 56px; }
+}
 .details-grid--event > div:nth-child(3) { border-right: 0; }
 .details-grid--event > div:nth-child(-n+3) { border-bottom: 1px solid var(--line); }
 .details-grid--event > div:nth-child(4),
