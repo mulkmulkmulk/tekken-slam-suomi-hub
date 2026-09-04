@@ -1037,6 +1037,8 @@ nav button:hover, nav button.active { color: white; }
   gap: 0.75rem;
   margin-top: 1.25rem;
 }
+.button--smashroom { gap: 8px; }
+.button--smashroom img { height: 20px; width: auto; }
 
 
 

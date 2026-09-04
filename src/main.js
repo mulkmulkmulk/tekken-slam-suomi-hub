@@ -366,7 +366,7 @@ function infoView() {
         <article class="feature-card"><p class="eyebrow">YÖPYMINEN</p><h3>Yö Smash Roomissa</h3><p>Venuella voi yöpyä omilla varusteilla, kuten makuualustalla ja peitolla, pientä nimellistä maksua vastaan.</p></article>
         <article class="feature-card"><p class="eyebrow">KATSOMINEN & KUVAUS</p><h3>Tule mukaan tunnelmaan</h3><p>Paikalle saa tulla vain katsomaan ja pelaamaan rentoja matseja. Huomioithan, että tapahtumapaikalla saatat näkyä livestriimissä tai tulla kuvatuksi.</p></article>
       </div>
-      <div class="venue-actions"><a class="button button--secondary" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Roomin sivut →</a><a class="button button--secondary" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Smash Room Vaasa kartalla →</a></div>
+      <div class="venue-actions"><a class="button button--secondary button--smashroom" href="https://smashroom.fi/" target="_blank" rel="noreferrer"><img src="/images/smash-room-logo.png" alt="">Smash Roomin sivut →</a><a class="button button--secondary" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Smash Room Vaasa kartalla →</a></div>
     </section>
 
   `;
