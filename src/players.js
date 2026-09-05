@@ -308,6 +308,31 @@ Raised Fist - Sound of the Republic`,
     youtube: "z33cus",
     kick: "z33cus",
     coach: "ka-fu",
+    whoAreYou: `Z33CUS, mut mua voi sanoo Zeekuks. Ikää 24.`,
+
+    aboutYou: `Meikäläinen on tällainen tavallinen tallaaja, joka tykkää tehdä someen juttuja ja striimailla. Viisi vuotta tullut tätä tehtyä, ja viimeisen vuoden aikana oon aktivoitunut somessa enemmän.
+
+Pelaan yleensä CS:ää, Minecraftia, Fortnitea ja Overwatchia, mutta pelaan muitakin pelejä — vaihtelu virkistää.
+
+Oon sellainen höpöttäjä, joka tykkää jutella ihmisille ja tehdä kaikkea kivaa, ja yleensä tuun toimeen kaikkien kanssa 🙂
+
+Tavoitteena olisi päästä striimaamisella pitkälle ja ehkä tehdä siitä joskus työ, mutta tällä hetkellä se on vielä unelma.`,
+
+    feelGoodSong: `No siis kysytään ihmiseltä, jolla aina soi musat korvilla, niin vaihtoehtoja löytyy kyllä — tykätyissä on lähes 4 000 biisiä.
+
+Tähän Tekken-turnaukseen sopisivat:
+[Linkin Park - Faint](https://open.spotify.com/track/7AB0cUXnzuSlAnyHOqmrZr?si=c314f4edf8924f29)
+[Eminem - Lose Yourself](https://open.spotify.com/track/1v7L65Lzy0j0vdpRjJewt1?si=443b9abd83b54866)
+
+Jos jotain hype-musaa pitää olla taskussa:
+[Calvin Harris & Ellie Goulding - Outside (remix)](https://open.spotify.com/track/0WZagJxhi7GayAyTKojh5a?si=9ce2791449d54b4d)`,
+
+    tournamentThoughts: `Voittamaan tultiin! Hieno olla messissä tällaisessa, kun ei oo koskaan aiemmin päässyt olemaan. Hieno päästä myös muiden striimaajien kanssa katsomaan, mikä meno!
+
+PIDETÄÄN HAUSKAA!
+
+ZEEKU KUITTAA 🙂`,
+
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
