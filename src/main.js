@@ -15,8 +15,10 @@ let selectedPlayer = null;
 let routeNotFound = false;
 let twitchState = { status: "loading", updatedAt: null };
 let clipsState = { status: "loading", clips: [], updatedAt: null };
+let highlightsState = { status: "loading", highlights: [], updatedAt: null };
 let selectedClipPlayers = new Set();
 let clipsPage = 1;
+let clipsMediaTab = "clips";
 const CLIPS_PER_PAGE = 12;
 
 // TEKKEN_SLAM_ROUTING_PATCH
@@ -342,23 +344,17 @@ function infoView() {
       </div>
       <div class="details-grid details-grid--event">
         <div><span>Päivä</span><strong>20.11.2026</strong><p>Tekken Slam Suomi -live-finaali.</p></div>
-        <div class="details-cell--venue"><div><span>Venue</span><strong><a class="inline-link inline-link--strong" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Room Vaasa ↗</a></strong><p><a class="inline-link" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Avaa Google Maps →</a></p></div><img class="details-venue-badge" src="/images/smash-room-logo.png" alt="Smash Room"></div>
+        <div><span>Venue</span><strong><a class="inline-link inline-link--strong" href="https://smashroom.fi/" target="_blank" rel="noreferrer">Smash Room Vaasa ↗</a></strong><p><a class="inline-link" href="https://maps.app.goo.gl/AZsoP8snE4ZxhBgAA" target="_blank" rel="noreferrer">Avaa Google Maps →</a></p></div>
         <div><span>Yleisö</span><strong>Vapaa pääsy</strong><p>Vierailijat voivat tulla seuraamaan toimintaa maksutta.</p></div>
+        <div><span>Striimi</span><strong>Vaasa Pub Fighters</strong><p><a class="inline-link" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">twitch.tv/vaasapubfighters →</a></p></div>
         <div><span>Järjestäjät</span><strong>VPF × TOW</strong><p>Vaasa Pub Fighters ja TekkenOnlineWeeklyt.</p></div>
-        <div class="details-cell--venue"><div><span>Striimi</span><strong><a class="inline-link inline-link--strong" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">Vaasa Pub Fighters ↗</a></strong><p><a class="inline-link" href="https://twitch.tv/vaasapubfighters" target="_blank" rel="noreferrer">twitch.tv/vaasapubfighters →</a></p></div><img class="details-venue-badge" src="/images/vaasa-pub-fighters-logo.png" alt="Vaasa Pub Fighters"></div>
         <div><span>Discord</span><strong><a class="inline-link inline-link--strong" href="https://discord.gg/WAT85TTCrF" target="_blank" rel="noreferrer">TekkenOnlineWeeklyt ↗</a></strong><p>Täällä tapahtumaa järjestetään ja siitä keskustellaan.</p></div>
       </div>
     </section>
 
     <section class="section venue-section">
       <div class="section-heading">
-        <div class="venue-heading-lockup">
-          <img class="venue-logo" src="/images/smash-room-logo.png" alt="Smash Room">
-          <div>
-            <p class="kicker"><a class="inline-link" href="https://smashroom.fi/" target="_blank" rel="noreferrer">SMASH ROOM VAASA ↗</a></p>
-            <h2>Venue & saapuminen</h2>
-          </div>
-        </div>
+        <div><p class="kicker"><a class="inline-link" href="https://smashroom.fi/" target="_blank" rel="noreferrer">SMASH ROOM VAASA ↗</a></p><h2>Venue & saapuminen</h2></div>
         <p>Tapahtumapaikka on esteetön ja siellä on mahdollista myös yöpyä omilla varusteilla pientä nimellistä maksua vastaan.</p>
       </div>
       <div class="feature-grid">
@@ -417,7 +413,7 @@ function clipCard(clip) {
         </div>
         <h3>${escapeHtml(clip.title || "Twitch-klippi")}</h3>
         <div class="clip-card__footer">
-          <button class="clip-player-link" type="button" data-clip-player="${escapeHtml(player?.id || clip.playerId || "")}">
+          <button class="clip-player-link" type="button" data-media-player="${escapeHtml(player?.id || clip.playerId || "")}">
             ${escapeHtml(playerName)}
           </button>
           <span>${formatViewers(clip.viewCount)} katselukertaa</span>
@@ -427,22 +423,70 @@ function clipCard(clip) {
   `;
 }
 
-function clipsView() {
-  const allClips = clipsState.clips || [];
-  const playersWithClips = players.filter((player) =>
-    allClips.some((clip) => clip.playerId === player.id)
-  );
-  const filteredClips = selectedClipPlayers.size === 0
-    ? allClips
-    : allClips.filter((clip) => selectedClipPlayers.has(clip.playerId));
+function formatHighlightDuration(value = "") {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return raw
+    .replace(/(\d+)h/g, "$1 h ")
+    .replace(/(\d+)m/g, "$1 min ")
+    .replace(/(\d+)s/g, "$1 s")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-  const totalPages = Math.max(1, Math.ceil(filteredClips.length / CLIPS_PER_PAGE));
+function highlightCard(highlight) {
+  const player = clipPlayer(highlight);
+  const playerName = player?.name || highlight.broadcasterName || highlight.broadcasterLogin || "Osallistuja";
+  const thumbnail = highlight.thumbnailUrl
+    ? `<img src="${escapeHtml(highlight.thumbnailUrl)}" alt="" loading="lazy">`
+    : `<div class="clip-card__fallback">TEKKEN 8</div>`;
+
+  return `
+    <article class="clip-card highlight-card" data-highlight-card="${escapeHtml(highlight.id)}">
+      <div class="clip-card__media">
+        ${thumbnail}
+        <span class="clip-card__player">${escapeHtml(playerName)}</span>
+        ${highlight.duration ? `<span class="highlight-card__duration">${escapeHtml(formatHighlightDuration(highlight.duration))}</span>` : ""}
+        <button class="clip-card__play" type="button" data-play-highlight="${escapeHtml(highlight.id)}" aria-label="Toista highlight ${escapeHtml(highlight.title || "")}">
+          <span>▶</span>
+        </button>
+      </div>
+      <div class="clip-card__body">
+        <div class="clip-card__meta">
+          <span>HIGHLIGHT</span>
+          <span>${formatClipDate(highlight.createdAt)}</span>
+        </div>
+        <h3>${escapeHtml(highlight.title || "Twitch-highlight")}</h3>
+        <div class="clip-card__footer">
+          <button class="clip-player-link" type="button" data-media-player="${escapeHtml(player?.id || highlight.playerId || "")}">
+            ${escapeHtml(playerName)}
+          </button>
+          <span>${formatViewers(highlight.viewCount)} katselukertaa</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function clipsView() {
+  const isHighlights = clipsMediaTab === "highlights";
+  const mediaState = isHighlights ? highlightsState : clipsState;
+  const allMedia = isHighlights ? (highlightsState.highlights || []) : (clipsState.clips || []);
+  const playersWithMedia = players.filter((player) =>
+    allMedia.some((item) => item.playerId === player.id)
+  );
+
+  const filteredMedia = selectedClipPlayers.size === 0
+    ? allMedia
+    : allMedia.filter((item) => selectedClipPlayers.has(item.playerId));
+
+  const totalPages = Math.max(1, Math.ceil(filteredMedia.length / CLIPS_PER_PAGE));
   clipsPage = Math.min(Math.max(1, clipsPage), totalPages);
   const pageStart = (clipsPage - 1) * CLIPS_PER_PAGE;
-  const visibleClips = filteredClips.slice(pageStart, pageStart + CLIPS_PER_PAGE);
+  const visibleMedia = filteredMedia.slice(pageStart, pageStart + CLIPS_PER_PAGE);
 
-  const filterOptions = playersWithClips.map((player) => {
-    const count = allClips.filter((clip) => clip.playerId === player.id).length;
+  const filterOptions = playersWithMedia.map((player) => {
+    const count = allMedia.filter((item) => item.playerId === player.id).length;
     const checked = selectedClipPlayers.has(player.id) ? " checked" : "";
     return `
       <label class="clip-check">
@@ -453,33 +497,42 @@ function clipsView() {
       </label>`;
   }).join("");
 
+  const mediaLabel = isHighlights ? "highlightteja" : "klippejä";
+  const mediaTitle = isHighlights ? "Highlightit" : "Klipit";
+
   let content = "";
-  if (clipsState.status === "loading") {
+  if (mediaState.status === "loading") {
     content = `
       <div class="clips-status">
         <span class="clips-status__spinner"></span>
-        <strong>Haetaan Tekken 8 -klippejä Twitchistä…</strong>
-        <p>Kirjastoon otetaan vain osallistujien Tekken 8 -kategorian klipit.</p>
+        <strong>Haetaan Tekken 8 -${mediaLabel} Twitchistä…</strong>
+        <p>${isHighlights
+          ? "Kirjastoon otetaan osallistujien Twitch-highlightit Tekken 8 -kategoriasta."
+          : "Kirjastoon otetaan vain osallistujien Tekken 8 -kategorian klipit."}</p>
       </div>`;
-  } else if (clipsState.status === "error") {
+  } else if (mediaState.status === "error") {
     content = `
       <div class="clips-status clips-status--error">
-        <strong>Klippejä ei saatu ladattua</strong>
+        <strong>${mediaTitle} eivät latautuneet</strong>
         <p>Twitch-yhteydessä oli hetkellinen ongelma. Kokeile päivittää sivu.</p>
       </div>`;
-  } else if (!visibleClips.length) {
+  } else if (!visibleMedia.length) {
     content = `
       <div class="clips-status">
-        <strong>${selectedClipPlayer === "all" ? "Tekken 8 -klippejä ei ole vielä löytynyt" : "Tälle osallistujalle ei löytynyt vielä Tekken 8 -klippejä"}</strong>
-        <p>Kun harjoitusstriimeistä tehdään Twitch-klippejä, ne ilmestyvät tänne automaattisesti.</p>
+        <strong>${selectedClipPlayers.size === 0
+          ? `Tekken 8 -${mediaLabel} ei ole vielä löytynyt`
+          : `Valituille osallistujille ei löytynyt vielä Tekken 8 -${mediaLabel}`}</strong>
+        <p>${isHighlights
+          ? "Kun osallistujat tekevät Twitchissä highlight-videoita, ne ilmestyvät tänne automaattisesti."
+          : "Kun harjoitusstriimeistä tehdään Twitch-klippejä, ne ilmestyvät tänne automaattisesti."}</p>
       </div>`;
   } else {
-    content = `<div class="clips-grid">${visibleClips.map(clipCard).join("")}</div>`;
+    content = `<div class="clips-grid">${visibleMedia.map(isHighlights ? highlightCard : clipCard).join("")}</div>`;
   }
 
-  const pagination = clipsState.status === "ready" && filteredClips.length > CLIPS_PER_PAGE
+  const pagination = mediaState.status === "ready" && filteredMedia.length > CLIPS_PER_PAGE
     ? `
-      <nav class="clips-pagination" aria-label="Klippisivut">
+      <nav class="clips-pagination" aria-label="${isHighlights ? "Highlightsivut" : "Klippisivut"}">
         <button type="button" class="clips-page-button" data-clips-prev${clipsPage <= 1 ? " disabled" : ""}>← Edellinen</button>
         <span class="clips-page-status">Sivu ${clipsPage} / ${totalPages}</span>
         <button type="button" class="clips-page-button" data-clips-next${clipsPage >= totalPages ? " disabled" : ""}>Seuraava →</button>
@@ -489,11 +542,20 @@ function clipsView() {
   return `
     <section class="coach-hero clips-hero">
       <p class="coach-eyebrow"><span class="coach-dot"></span>Tekken Slam Suomi &mdash; Harjoituskausi</p>
-      <h1 class="coach-title"><span class="clips-title-nowrap">Treeniklipit</span></h1>
-      <p class="coach-subhead">Seuraa osallistujien kehitystä kohti finaalia. Kirjastossa näytetään automaattisesti vain osallistujien Tekken 8 -kategorian treeniklippejä, uusimmat ensin.</p>
+      <h1 class="coach-title"><span class="clips-title-nowrap">Treenimedia</span></h1>
+      <p class="coach-subhead">Seuraa osallistujien kehitystä kohti finaalia. Twitch-klipit ja pidemmät highlightit päivittyvät tänne automaattisesti, uusimmat ensin.</p>
     </section>
 
     <section class="clips-library">
+      <div class="clips-media-tabs" role="tablist" aria-label="Treenimedian tyyppi">
+        <button type="button" class="clips-media-tab${!isHighlights ? " active" : ""}" data-media-tab="clips" role="tab" aria-selected="${!isHighlights}">
+          Klipit <span>${clipsState.clips.length}</span>
+        </button>
+        <button type="button" class="clips-media-tab${isHighlights ? " active" : ""}" data-media-tab="highlights" role="tab" aria-selected="${isHighlights}">
+          Highlightit <span>${highlightsState.highlights.length}</span>
+        </button>
+      </div>
+
       <div class="clips-toolbar">
         <div>
           <div class="clip-filter-multi">
@@ -501,21 +563,18 @@ function clipsView() {
             <details class="clip-filter-dropdown">
               <summary>
                 <span>${selectedClipPlayers.size === 0 ? "Kaikki osallistujat" : `${selectedClipPlayers.size} osallistujaa valittu`}</span>
-                <span class="clip-filter-dropdown__arrow">⌄</span>
+                <span class="clip-filter-dropdown__chevron">⌄</span>
               </summary>
               <div class="clip-filter-dropdown__panel">
-                <div class="clip-filter-dropdown__actions">
-                  <button type="button" data-clip-clear>Kaikki</button>
-                </div>
-                <div class="clip-filter-checks">
-                  ${filterOptions}
-                </div>
+                <button type="button" class="clip-filter-clear" data-clip-clear>Kaikki osallistujat</button>
+                ${filterOptions || `<p class="clip-filter-empty">Ei ${mediaLabel} vielä.</p>`}
               </div>
             </details>
           </div>
         </div>
-        ${clipsState.updatedAt ? `<p class="clips-updated">Päivitetty ${formatClipDate(clipsState.updatedAt)}</p>` : ""}
+        ${mediaState.updatedAt ? `<p class="clips-updated">Päivitetty ${formatClipDate(mediaState.updatedAt)}</p>` : ""}
       </div>
+
       ${content}
       ${pagination}
     </section>
@@ -544,6 +603,34 @@ async function loadClips() {
   }
 
   if (currentView === "clips" || currentView === "players") render();
+}
+
+
+async function loadHighlights() {
+  highlightsState = {
+    ...highlightsState,
+    status: highlightsState.highlights.length ? "ready" : "loading",
+  };
+  if (currentView === "clips") render();
+
+  try {
+    const response = await fetch("/api/twitch/highlights", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    highlightsState = {
+      status: "ready",
+      highlights: Array.isArray(data.highlights) ? data.highlights : [],
+      updatedAt: data.updatedAt || null,
+    };
+  } catch (error) {
+    console.warn("Twitch highlights could not be loaded:", error);
+    highlightsState = {
+      ...highlightsState,
+      status: highlightsState.highlights.length ? "ready" : "error",
+    };
+  }
+
+  if (currentView === "clips") render();
 }
 
 
@@ -1079,6 +1166,16 @@ function render() {
   });
 
 
+  app.querySelectorAll("[data-media-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextTab = button.dataset.mediaTab;
+      if (nextTab !== "clips" && nextTab !== "highlights") return;
+      clipsMediaTab = nextTab;
+      clipsPage = 1;
+      render();
+    });
+  });
+
   app.querySelectorAll("[data-clip-check]").forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
       const playerId = checkbox.value;
@@ -1099,9 +1196,9 @@ function render() {
     render();
   });
 
-  app.querySelectorAll("[data-clip-player]").forEach((button) => {
+  app.querySelectorAll("[data-media-player]").forEach((button) => {
     button.addEventListener("click", () => {
-      const playerId = button.dataset.clipPlayer;
+      const playerId = button.dataset.mediaPlayer;
       if (!playerId) return;
       selectedClipPlayers = new Set([playerId]);
       clipsPage = 1;
@@ -1114,6 +1211,7 @@ function render() {
       const playerId = button.dataset.openPlayerClips;
       if (!playerId) return;
       selectedClipPlayers = new Set([playerId]);
+      clipsMediaTab = "clips";
       clipsPage = 1;
       navigateTo("/klipit");
     });
@@ -1127,11 +1225,13 @@ function render() {
   });
 
   app.querySelector("[data-clips-next]")?.addEventListener("click", () => {
-    const allClips = clipsState.clips || [];
-    const filteredClips = selectedClipPlayers.size === 0
-      ? allClips
-      : allClips.filter((clip) => selectedClipPlayers.has(clip.playerId));
-    const totalPages = Math.max(1, Math.ceil(filteredClips.length / CLIPS_PER_PAGE));
+    const allMedia = clipsMediaTab === "highlights"
+      ? (highlightsState.highlights || [])
+      : (clipsState.clips || []);
+    const filteredMedia = selectedClipPlayers.size === 0
+      ? allMedia
+      : allMedia.filter((item) => selectedClipPlayers.has(item.playerId));
+    const totalPages = Math.max(1, Math.ceil(filteredMedia.length / CLIPS_PER_PAGE));
     if (clipsPage >= totalPages) return;
     clipsPage += 1;
     render();
@@ -1150,6 +1250,25 @@ function render() {
       iframe.className = "clip-card__embed";
       iframe.src = `https://clips.twitch.tv/embed?clip=${encodeURIComponent(clipId)}&parent=${encodeURIComponent(parent)}&autoplay=true`;
       iframe.title = "Twitch-klippi";
+      iframe.allow = "autoplay; fullscreen";
+      iframe.allowFullscreen = true;
+      iframe.setAttribute("loading", "lazy");
+      media.replaceChildren(iframe);
+    });
+  });
+
+  app.querySelectorAll("[data-play-highlight]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const videoId = button.dataset.playHighlight;
+      const card = button.closest("[data-highlight-card]");
+      const media = card?.querySelector(".clip-card__media");
+      if (!videoId || !media) return;
+
+      const parent = window.location.hostname || "localhost";
+      const iframe = document.createElement("iframe");
+      iframe.className = "clip-card__embed";
+      iframe.src = `https://player.twitch.tv/?video=${encodeURIComponent(`v${videoId}`)}&parent=${encodeURIComponent(parent)}&autoplay=true`;
+      iframe.title = "Twitch-highlight";
       iframe.allow = "autoplay; fullscreen";
       iframe.allowFullscreen = true;
       iframe.setAttribute("loading", "lazy");
@@ -1178,3 +1297,4 @@ refreshTwitchStatus();
 setInterval(() => refreshTwitchStatus(), 60_000);
 loadCoaches();
 loadClips();
+loadHighlights();
