@@ -805,7 +805,18 @@ const server = http.createServer(async (req, res) => {
   // else, including .env (real Twitch API secrets), server.mjs, package.json.
   let filePath;
   let allowedRoot;
-  if (requestPath === "/" || requestPath === "/klipit") {
+
+  // SPA routes must all return index.html on direct navigation / refresh.
+  // The frontend router then resolves the actual view.
+  const isSpaRoute =
+    requestPath === "/" ||
+    requestPath === "/klipit" ||
+    requestPath === "/pelaajat" ||
+    requestPath.startsWith("/pelaajat/") ||
+    requestPath === "/valmentajat" ||
+    requestPath.startsWith("/valmentajat/");
+
+  if (isSpaRoute) {
     filePath = path.join(__dirname, "index.html");
     allowedRoot = __dirname;
   } else if (requestPath.startsWith("/src/")) {
