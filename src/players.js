@@ -163,7 +163,7 @@ On kivaa päästä tapaamaan kanssastriimaajia livenä ja pitämään hauskaa. V
     initials: "R1",
     twitchChannel: "r1sbe",
     instagram: "risbekti",
-    coach: "",
+    coach: "alika",
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
