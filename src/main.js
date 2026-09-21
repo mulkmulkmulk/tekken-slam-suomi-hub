@@ -776,6 +776,7 @@ function playerProfileView(player) {
       <p class="kicker">TEKKEN SLAM SUOMI · OSALLISTUJA</p>
       <h1>${escapeHtml(player.name)}</h1>
       <p>Seuraa ${escapeHtml(player.name)}n harjoittelua ja matkaa kohti Tekken Slam Suomi -finaalia.</p>
+      ${coachLine(player)}
       <div class="social-list">${socialLinks(player)}</div>
     </section>
 
@@ -929,6 +930,26 @@ function coachCard(coach, index) {
     </a>`;
 }
 
+function coachStudentLink(coach) {
+  const student = players.find((player) => player.coach === coach.slug);
+  if (!student) return "";
+
+  return `
+    <a class="coach-student-link" href="/pelaajat/${encodeURIComponent(student.id)}" data-roster-player="${escapeHtml(student.id)}">
+      <span>Valmennettava</span>
+      <strong>${escapeHtml(student.name)}</strong>
+      <b aria-hidden="true">→</b>
+    </a>`;
+}
+
+function coachRosterItem(coach, index) {
+  return `
+    <div class="coach-roster-item">
+      ${coachCard(coach, index)}
+      ${coachStudentLink(coach)}
+    </div>`;
+}
+
 function coachStat(label, value, emphasis = false) {
   if (!value) return "";
   return `
@@ -936,6 +957,32 @@ function coachStat(label, value, emphasis = false) {
         <div class="coach-stat-label">${label}</div>
         <div class="coach-stat-value${emphasis ? " coach-stat-value--emphasis" : ""}">${value}</div>
       </div>`;
+}
+
+function coachStudents(coach) {
+  return players.filter((player) => player.coach === coach.slug);
+}
+
+function coachStudentsSection(coach) {
+  const student = coachStudents(coach)[0];
+  if (!student) return "";
+
+  return `
+    <section class="coach-students" aria-label="Valmennettava">
+      <button class="coach-student-card" type="button" data-player="${escapeHtml(student.id)}">
+        <span class="coach-student-card__avatar">
+          ${student.avatarUrl
+            ? `<img src="${escapeHtml(student.avatarUrl)}" alt="" loading="lazy" onerror="this.remove()">`
+            : ""}
+          <strong>${escapeHtml(student.initials || student.name.slice(0, 2))}</strong>
+        </span>
+        <span class="coach-student-card__copy">
+          <small>Valmennettava</small>
+          <strong>${escapeHtml(student.name)}</strong>
+          <span>Avaa osallistujaprofiili →</span>
+        </span>
+      </button>
+    </section>`;
 }
 
 function coachProfileView(coach, index) {
@@ -1000,6 +1047,8 @@ function coachProfileView(coach, index) {
       ${coachStat("Pelaajana", coach.description)}
     </div>
 
+    ${coachStudentsSection(coach)}
+
     <div class="coach-cta-row">
       <div class="coach-cta-box">
         <p class="coach-cta-label">Ota yhteyttä Discordissa</p>
@@ -1040,7 +1089,7 @@ function coachesView() {
       <p class="coach-subhead">${coaches.length} valmentajaa jakaa osaamistaan osallistujille. Selaa profiileja ja tutustu valmentajan hahmoihin, tyyliin sekä esittelyvideoon.</p>
     </section>
     <section class="coach-roster-section">
-      <div class="coach-roster">${coaches.map((c, i) => coachCard(c, i)).join("")}</div>
+      <div class="coach-roster">${coaches.map((c, i) => coachRosterItem(c, i)).join("")}</div>
       <p class="coach-source-note">Valmentajien profiilit perustuvat Tekken Slam Suomi -valmentajahaun tietoihin.</p>
     </section>`;
 }
@@ -1127,6 +1176,16 @@ function render() {
     button.addEventListener("click", () => {
       const player = players.find((item) => item.id === button.dataset.player);
       if (!player) return;
+      navigateTo(`/pelaajat/${encodeURIComponent(player.id)}`);
+    });
+  });
+
+  app.querySelectorAll("[data-roster-player]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const player = players.find((item) => item.id === link.dataset.rosterPlayer);
+      if (!player) return;
+      event.preventDefault();
       navigateTo(`/pelaajat/${encodeURIComponent(player.id)}`);
     });
   });
