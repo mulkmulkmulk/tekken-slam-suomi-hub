@@ -294,6 +294,17 @@ Raised Fist - Sound of the Republic`,
     tiktok: "lancelotssb",
     youtube: "lancelotssb",
     coach: "visatron",
+
+    whoAreYou: `Hugo ”Lancelot” Hujala ja 24v.`,
+
+    aboutYou: `Mut tunnetaan somessa eniten varmaa Super Smash Brossista ja oon siinä tällä hetkellä Suomen paras pelaaja! Tykkään matkustella tän pelin perässä ja striimaan siihen liittyvää harjoittelua jonkin verran Twitchissä!`,
+
+    feelGoodSong: `Ei tuu mitään tiettyä oikeen mieleen, mutta Smash turnauksissa valitsen usein:
+
+Karma - Tekken 6`,
+
+    tournamentThoughts: `Rehellisesti haluan koittaa voittaa turnauksen! Mutta vaikka niin ei kävisi niin odotan innolla kilpailemista uudessa pelissä ja uusiin ihmisiin tutustumista!`,
+
     isLive: false,
     streamTitle: "",
     viewerCount: 0,
