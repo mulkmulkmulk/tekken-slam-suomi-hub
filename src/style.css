@@ -2086,3 +2086,60 @@ nav button:hover, nav button.active { color: white; }
   color: var(--coach-gold);
   transform: translateX(2px);
 }
+
+
+/* Tekken Slam Suomi one-off live final announcement */
+.tournament-banner {
+  position: relative;
+  padding: 46px clamp(24px, 7vw, 110px);
+  border-bottom: 1px solid #54252d;
+  background: radial-gradient(ellipse at 95% 10%, rgba(242,38,54,.2), transparent 48%), linear-gradient(110deg, #191116, #0d0d12 75%);
+}
+.tournament-banner::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--red);
+}
+.tournament-banner__copy { position: relative; max-width: 1150px; margin: 0 auto; }
+.tournament-banner h2 { font-size: clamp(34px, 4.5vw, 62px); line-height: 1.05; }
+.tournament-banner h2 em { color: var(--red); font-style: normal; }
+.tournament-banner__date { margin: 16px 0 0; font: 600 clamp(15px, 2vw, 21px)/1.5 "JetBrains Mono", monospace; color: #f5f5f2; }
+.tournament-banner__date span { color: var(--red); }
+.tournament-banner__description { max-width: 690px; margin: 14px 0 0; color: #b9b9c2; font-size: 14px; line-height: 1.7; }
+.tournament-banner__actions { display: flex; align-items: stretch; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
+.tournament-banner__stream { display: flex; align-items: center; gap: 12px; padding: 8px 16px 8px 9px; min-height: 60px; border: 1px solid #4b3541; border-radius: 3px; background: #1c171f; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+.tournament-banner__stream:hover { background: #29202d; border-color: var(--red); transform: translateY(-1px); }
+.tournament-banner__stream img { width: 46px; height: 46px; object-fit: contain; }
+.tournament-banner__stream span { display: flex; flex-direction: column; gap: 4px; }
+.tournament-banner__stream small { color: #a9a9b3; font: 600 10px "JetBrains Mono", monospace; letter-spacing: .08em; }
+.tournament-banner__stream strong { color: #fff; font-size: 13px; }
+@media (max-width: 620px) {
+  .tournament-banner { padding-top: 34px; padding-bottom: 34px; }
+  .tournament-banner__actions { flex-direction: column; }
+  .tournament-banner__actions > a { width: 100%; }
+  .tournament-banner__date { font-size: 14px; }
+}
+
+/* Final announcement: centered layout matching the Harjoituskausi section */
+.tournament-banner { text-align: center; padding-top: 66px; padding-bottom: 66px; }
+.tournament-banner__copy { max-width: 1240px; }
+.tournament-banner .kicker { justify-content: center; }
+.tournament-banner h2 { font-size: clamp(36px, 5vw, 68px); line-height: 1.06; }
+.tournament-banner__description {
+  max-width: none;
+  margin: 20px auto 0;
+  font-size: 14px;
+  text-wrap: balance;
+}
+.tournament-banner__actions {
+  justify-content: center;
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 30px;
+}
+.tournament-banner__actions > a { min-width: 245px; min-height: 66px; }
+.tournament-banner__actions > .button { padding: 14px 24px; }
+.tournament-banner__stream { justify-content: center; text-align: left; }
+@media (max-width: 760px) {
+  .tournament-banner { padding-top: 48px; padding-bottom: 48px; }
+  .tournament-banner__actions { max-width: 420px; margin-left: auto; margin-right: auto; }
+  .tournament-banner__actions > a { min-width: 0; }
+}

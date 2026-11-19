@@ -251,6 +251,22 @@ const sortedPlayers = () => [...players].sort((a, b) => Number(b.isLive) - Numbe
 function infoView() {
   const liveCount = livePlayers().length;
   return `
+    <section class="tournament-banner" aria-labelledby="tournament-banner-title">
+      <div class="tournament-banner__copy">
+        <p class="kicker kicker--live"><span></span> TURNAUSINFO</p>
+        <h2 id="tournament-banner-title">Seuraa Tekken Slam Suomi <em>live-finaalia!</em></h2>
+        <p class="tournament-banner__date">Perjantai 20.11.2026 <span>·</span> KLO 19.00</p>
+        <p class="tournament-banner__description">Turnaus järjestetään Vaasassa osana Kahakka 3 -tapahtumaa. Seuraa ottelukaaviota Challongessa ja katso finaali suorana Twitchissä!</p>
+        <div class="tournament-banner__actions">
+          <a class="button button--primary" href="https://challonge.com/m7lqlw8j" target="_blank" rel="noopener noreferrer">Katso turnauskaavio ↗</a>
+          <a class="tournament-banner__stream" href="https://www.twitch.tv/vaasapubfighters" target="_blank" rel="noopener noreferrer" aria-label="Katso turnaus Vaasa Pub Fightersin Twitch-kanavalta">
+            <img src="/images/vaasa-pub-fighters-logo.png" alt="" loading="lazy">
+            <span><small>SUORA LÄHETYS</small><strong>Vaasa Pub Fighters ↗</strong></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section class="event event--compact">
       <p class="kicker kicker--live"><span></span> HARJOITUSKAUSI</p>
       <h2>${liveCount ? `${liveCount} osallistujaa on juuri nyt livessä` : "Seuraa harjoittelua suorana"}</h2>
